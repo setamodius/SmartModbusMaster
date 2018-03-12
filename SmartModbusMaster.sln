@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartModbusMaster", "SmartModbusMaster\SmartModbusMaster.csproj", "{7E0145C5-CC7C-479F-BB9B-5B108DEA00E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartModbusMasterTests", "SmartModbusMasterTests\SmartModbusMasterTests.csproj", "{11B8A2AD-D9EC-433F-AA20-27F033A94AF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModbusTagManager", "ModbusTagManager\ModbusTagManager.csproj", "{FDA8BDD6-A645-4848-B0C1-AFFC6CA19489}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7E0145C5-CC7C-479F-BB9B-5B108DEA00E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E0145C5-CC7C-479F-BB9B-5B108DEA00E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E0145C5-CC7C-479F-BB9B-5B108DEA00E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E0145C5-CC7C-479F-BB9B-5B108DEA00E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11B8A2AD-D9EC-433F-AA20-27F033A94AF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11B8A2AD-D9EC-433F-AA20-27F033A94AF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11B8A2AD-D9EC-433F-AA20-27F033A94AF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11B8A2AD-D9EC-433F-AA20-27F033A94AF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDA8BDD6-A645-4848-B0C1-AFFC6CA19489}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDA8BDD6-A645-4848-B0C1-AFFC6CA19489}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDA8BDD6-A645-4848-B0C1-AFFC6CA19489}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDA8BDD6-A645-4848-B0C1-AFFC6CA19489}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

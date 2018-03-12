@@ -1,0 +1,19 @@
+﻿Modbus Types	Tag Types
+Bool			Bool
+UShort			UShort
+				Float
+
+Type						Addresses							Range Support	Merge/Mask Support
+----							---------						-------------	------------------
+TagType<float, ushort>		2 Address (First 2 of n addresses)	Yes				No
+TagType<ushort, ushort>		n Address							Yes				Yes
+TagType<bool, bool>			n Address							No				Yes
+
+
+Tag
+ |
+ +- Name
+ |
+ +-	InnerTag
+ |
+ +- Device

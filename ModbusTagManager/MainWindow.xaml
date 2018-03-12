@@ -1,0 +1,213 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ModbusTagManager"
+        xmlns:models="clr-namespace:ModbusTagManager.Models"
+        xmlns:ModelView="clr-namespace:ModbusTagManager.ModelView" x:Class="ModbusTagManager.MainWindow"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="500" Width="900" Loaded="Window_Loaded" Background="White">
+    <Window.Resources>
+        <ModelView:LiveDataViewModel x:Key="LiveDataViewModelDataSource" d:IsDataSource="True"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <DataTemplate x:Key="TagDataTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" MinWidth="250"/>
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="250"/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Grid.ColumnSpan="3" Margin="1,0,0,0" Stroke="Black" RadiusX="2" RadiusY="2" Fill="#FFC7C7C7" />
+                <Rectangle Grid.ColumnSpan="1" Margin="0" Stroke="Black" RadiusX="2" RadiusY="2" Grid.Column="1" Style="{DynamicResource RectangleBackgroundStyle}" />
+                <TextBlock Margin="5,0,0,0" TextWrapping="Wrap" Text="{Binding Name}" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Width="Auto" />
+                <StackPanel Grid.Column="2" HorizontalAlignment="Stretch" Margin="5,0" Orientation="Horizontal" Width="Auto" d:LayoutOverrides="Height">
+                    <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{DynamicResource TextBlockFunctionStyle}" d:LayoutOverrides="LeftMargin, RightMargin, TopMargin, BottomMargin"/>
+                    <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{DynamicResource TextBlockFunctionStyle}" Margin="0,2.02" d:LayoutOverrides="LeftMargin, RightMargin" Text=" - "/>
+                    <TextBlock TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{DynamicResource TextBlockFunctionStyle}" Margin="0,2.02" d:LayoutOverrides="LeftMargin, RightMargin" Text="{Binding TagType}"/>
+                </StackPanel>
+                <TextBlock Margin="0" TextWrapping="Wrap" Text="{Binding Value}" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Width="Auto" Grid.Column="1" />
+                <TextBox x:Name="textBox" Grid.ColumnSpan="1" Grid.Column="1" Height="Auto" Margin="0" TextWrapping="Wrap" Text="{Binding WriteValue, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Width="Auto" Visibility="{Binding IsWrite, Converter={StaticResource BooleanToVisibilityConverter}}" TextAlignment="Center" UndoLimit="92" BorderBrush="{x:Null}" />
+                <Button x:Name="button" Content="Send" Grid.Column="3" HorizontalAlignment="Stretch" Width="Auto" Margin="10,0,0,0" Visibility="{Binding IsWrite, Converter={StaticResource BooleanToVisibilityConverter}}" CommandParameter="{Binding Mode=OneWay}" Command="{Binding WriteCommand, Source={StaticResource LiveDataViewModelDataSource}}"/>
+            </Grid>
+        </DataTemplate>
+        <Style x:Key="RectangleBackgroundStyle" TargetType="{x:Type Rectangle}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Quality}" Value="True">
+                    <Setter Property="Fill" Value="Lime" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Quality}" Value="False">
+                    <Setter Property="Fill" Value="Red" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsWrite}" Value="True">
+                    <Setter Property="Fill" Value="Yellow" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="TextBlockFunctionStyle" TargetType="{x:Type TextBlock}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Function}" Value="1">
+                    <Setter Property="Text" Value="01 - Coil Status" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Function}" Value="2">
+                    <Setter Property="Text" Value="02- Input Status" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Function}" Value="3">
+                    <Setter Property="Text" Value="03 - Holding Register" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Function}" Value="4">
+                    <Setter Property="Text" Value="04 - Input Register" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <TabControl x:Name="tabControl" Margin="0" d:LayoutOverrides="TopPosition, BottomPosition" DataContext="{Binding Source={StaticResource LiveDataViewModelDataSource}}">
+        <TabItem Header="TabItem">
+            <Grid Margin="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="300" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Margin="0">
+                    <TextBlock TextWrapping="Wrap" Text="Tags" TextAlignment="Center" FontWeight="Bold" Margin="0,8,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" />
+                    <TreeView x:Name="treeView" Margin="8,30,8,40" ItemsSource="{Binding GetAllData}" >
+                        <TreeView.Resources>
+                            <HierarchicalDataTemplate DataType="{x:Type models:DeviceModel}" ItemsSource="{Binding Tags}">
+                                <TextBlock>
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat=" {0} - {1}">
+                                            <Binding Path="Name" />
+                                            <Binding Path="Ip" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </HierarchicalDataTemplate>
+                            <HierarchicalDataTemplate DataType="{x:Type models:TagModel}" ItemsSource="{Binding}">
+                                <TextBlock Text="{Binding Name}" />
+                            </HierarchicalDataTemplate>
+                        </TreeView.Resources>
+                        <TreeView.DataContext>
+                            <local:DesignData />
+                        </TreeView.DataContext>
+                    </TreeView>
+                    <Button x:Name="BtnOpen" Content="Open" Margin="32,0,178,8" VerticalAlignment="Bottom" Height="24" Grid.Column="1" Click="btnOpenFile_Click" />
+                    <Button x:Name="BtnSave" Content="Save" Margin="147,0,63,8" VerticalAlignment="Bottom" Height="24" Grid.Column="1" Click="btnSaveFile_Click" />
+                </Grid>
+                <GridSplitter x:Name="gridSplitter" HorizontalAlignment="Stretch" Margin="0" ResizeDirection="Columns" Grid.Column="1" />
+                <Grid Margin="0" Grid.Column="2" DataContext="{Binding SelectedItem, ElementName=treeView, Mode=OneWay}">
+                    <Grid Margin="10">
+                        <Grid.Style>
+                            <Style>
+                                <Setter Property="UIElement.Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsDevice}" Value="True">
+                                        <Setter Property="UIElement.Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="36" />
+                            <RowDefinition Height="32" />
+                            <RowDefinition Height="32" />
+                            <RowDefinition Height="32" />
+                            <RowDefinition Height="32" />
+                            <RowDefinition Height="32" />
+                            <RowDefinition Height="32" />
+                            <RowDefinition Height="32" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock TextWrapping="Wrap" Text="Device Properties" VerticalAlignment="Top" Margin="0" HorizontalAlignment="Left" Height="16" Width="294" Grid.ColumnSpan="2" FontWeight="Bold" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Name" VerticalAlignment="Center" Margin="0" Grid.Row="1" />
+                        <TextBox Margin="0,0,4,0" Grid.Row="1" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Center" Height="22" Text="{Binding Name}" IsEnabled="{Binding IsChecked, ElementName=checkBox}" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Ip" Margin="0" Grid.Row="2" VerticalAlignment="Center" />
+                        <TextBox Margin="0,0,4,0" Grid.Row="2" TextWrapping="Wrap" Grid.Column="1" Height="22" Text="{Binding Ip}" IsEnabled="{Binding IsChecked, ElementName=checkBox}" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Port" Margin="0" Grid.Row="3" d:LayoutOverrides="Height" VerticalAlignment="Center" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Device Id" Margin="0" Grid.Row="4" d:LayoutOverrides="Height" VerticalAlignment="Center" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Refresh Rate" Margin="0" Grid.Row="5" d:LayoutOverrides="Height" VerticalAlignment="Center" />
+                        <TextBox Margin="0,0,4,0" Grid.Row="3" TextWrapping="Wrap" Grid.Column="1" Height="22"  Text="{Binding Port}" IsEnabled="{Binding IsChecked, ElementName=checkBox}" />
+                        <TextBox Margin="0,0,4,0" Grid.Row="4" TextWrapping="Wrap" Grid.Column="1" Height="22" Text="{Binding DeviceId}" IsEnabled="{Binding IsChecked, ElementName=checkBox}" />
+                        <TextBox Margin="0,0,4,0" Grid.Row="5" TextWrapping="Wrap" Grid.Column="1" Height="22" Text="{Binding RefreshRate}" IsEnabled="{Binding IsChecked, ElementName=checkBox}" />
+                        <CheckBox x:Name="checkBox" Content="Is Active" Grid.Column="1" HorizontalAlignment="Left" Margin="0" Grid.Row="6" VerticalAlignment="Center" IsChecked="{Binding IsActive}" />
+                    </Grid>
+                    <Grid Margin="10">
+                        <Grid.Style>
+                            <Style>
+                                <Setter Property="UIElement.Visibility" Value="Collapsed" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsDevice}" Value="False">
+                                        <Setter Property="UIElement.Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="36" />
+                            <RowDefinition Height="32" />
+                            <RowDefinition Height="32" />
+                            <RowDefinition Height="32" />
+                            <RowDefinition Height="32" />
+                            <RowDefinition Height="32" />
+                            <RowDefinition Height="32" />
+                            <RowDefinition Height="32" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock TextWrapping="Wrap" Text="Tag Properties" VerticalAlignment="Top" Margin="0,0,-5.4,0" HorizontalAlignment="Left" Height="16" Width="294" Grid.ColumnSpan="3" FontWeight="Bold" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Name" VerticalAlignment="Center" Margin="0" Grid.Row="1" />
+                        <TextBox Margin="0,3,4,3" Grid.Row="1" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Center" Height="22" Grid.ColumnSpan="3" Text="{Binding Name}" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Modbus Type" Margin="0" Grid.Row="2" VerticalAlignment="Center" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Type" Margin="8,0,0,0" Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Mask Type" Margin="0,4.02" Grid.Row="4" VerticalAlignment="Center" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Merge Type" Margin="0,4.02" Grid.Row="5" VerticalAlignment="Center" />
+                        <TextBox Margin="0,5,4,5" Grid.Row="3" TextWrapping="Wrap" Grid.Column="1" Height="22" Text="{Binding AddressString}" />
+                        <TextBox Margin="0,3,4,3" Grid.Row="4" TextWrapping="Wrap" Grid.Column="3" Height="22" Text="{Binding Mask}" />
+                        <ComboBox Margin="0,0,4,0" Grid.Column="1" Grid.Row="2" Height="22" ItemsSource="{Binding Source={x:Static models:ModbusType.Types}}" DisplayMemberPath="Value" SelectedItem="{Binding TagModbusType}" />
+                        <ComboBox Margin="0,0,4,0" Grid.Column="3" Grid.Row="2" Height="22" ItemsSource="{Binding Source={x:Static models:ValueType.Types}}" DisplayMemberPath="Value"  SelectedItem="{Binding TagValueType}" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Address" Margin="0" Grid.Row="3" VerticalAlignment="Center" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Mask" Margin="8,0,0,0" Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" />
+                        <ComboBox Margin="0,0,4,0" Grid.Column="1" Grid.Row="4" Height="22" ItemsSource="{Binding Source={x:Static models:MaskType.Types}}" DisplayMemberPath="Value"  SelectedItem="{Binding TagMaskType}" />
+                        <ComboBox Margin="0,0,4,0" Grid.Column="1" Grid.Row="5" Height="22" ItemsSource="{Binding Source={x:Static models:MergeType.Types}}" DisplayMemberPath="Value"  SelectedItem="{Binding TagMergeType}" />
+                        <TextBox Margin="0,0,4,0" Grid.Row="5" TextWrapping="Wrap" Grid.Column="3" Height="22" Text="{Binding Range}" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Range" Margin="8,0,0,0" Grid.Row="5" Grid.Column="2" d:LayoutOverrides="Height" VerticalAlignment="Center" />
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Direction" Margin="10,0,0,0" Grid.Row="3" Grid.Column="2" d:LayoutOverrides="Height" VerticalAlignment="Center" />
+                        <ComboBox Margin="0,0,4,0" Grid.Column="3" Grid.Row="3" Height="22" ItemsSource="{Binding Source={x:Static models:DirectionType.Types}}" DisplayMemberPath="Value"  SelectedItem="{Binding TagDirectionType}" />
+                    </Grid>
+                </Grid>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Live Data">
+            <Grid Background="#FFE5E5E5" DataContext="{Binding Mode=OneWay}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="200" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" />
+                    <RowDefinition Height="*" />
+                    
+                </Grid.RowDefinitions>
+                <ListBox x:Name="lstTags" Margin="10" ItemTemplate="{DynamicResource TagDataTemplate}" Grid.Row="2" ItemsSource="{Binding CurrentTags}" />
+                <Button Content="Start" Height="24" Margin="0,10,10,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Command="{Binding StartCommand}" Grid.RowSpan="2" />
+                <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,12.02,0,2.02" TextWrapping="Wrap" Text="CSV File Path :" VerticalAlignment="Center" />
+                <TextBox x:Name="tbxFileLocation" Margin="110,11.02,90,1.02" TextWrapping="Wrap" VerticalAlignment="Center" Grid.ColumnSpan="2" Text="{Binding FilePath}" IsReadOnly="True" />
+                <Button Content="Open" HorizontalAlignment="Right" Margin="0,10.02,10,0.02" Width="75" VerticalAlignment="Center" Grid.Column="1" Command="{Binding FileOpenCommand}" CommandParameter="{Binding Text, ElementName=tbxFileLocation}" />
+                <Button Content="Browse" Margin="53.913,11.793,90,1.793" VerticalAlignment="Center" FontSize="9.333" Grid.Column="1" d:LayoutOverrides="Width" Click="browseButtonClicked" />
+                <Button Content="Stop" Height="24" Margin="0,39,10,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" />
+                <TextBlock Grid.Column="1" Margin="0,70,0,60.98" Grid.Row="1" TextWrapping="Wrap" Text="{Binding Status}" HorizontalAlignment="Left" FontWeight="Bold" d:LayoutOverrides="Height" Grid.RowSpan="2" />
+                <TextBlock Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Text="{Binding DeviceCount, Mode=OneWay, StringFormat=\{0:D\} device(s)}" VerticalAlignment="Top" Margin="0,90.82,0,0" Grid.RowSpan="2" />
+            </Grid>
+        </TabItem>
+    </TabControl>
+</Window>
