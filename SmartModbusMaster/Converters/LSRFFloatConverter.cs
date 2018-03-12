@@ -22,11 +22,6 @@ namespace Kr.Communication.SmartModbusMaster.Converters
             return BitConverter.ToSingle(bytes, 0);
         }
 
-        /* kodun arasında acıklama satırlarında dolaşırken kim bilir kaçıncı satırın
-        kaçıncı sütununda yazılmış anlamsız bir harf dizisi, beyninde bir kaç küçük
-        elektriksel impuls üretimine neden oluyorsa ve bu sende anlamsız bir şekilde
-        anlamlandırma oluşturuyorsa anlamsızlık nedir. */
-
         public ushort[] ConvertToUshort(float value)
         {
             ushort[] ushortData = new ushort[2];
