@@ -8,7 +8,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
         [TestMethod()]
         public void FromFileTest()
         {
-            ModbusDevices d = Creator.FromFile(@"C:\Users\Kerem\Source\Repos\modbus\SmartModbusMaster\ModbusTagManager\deneme.csv");
+            ModbusDevices d = Creator.FromFile(@"");// path
             d["Device1"].Start();
         }
 
