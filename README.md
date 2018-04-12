@@ -6,8 +6,6 @@ It converts Modbus polling function to event. It uses NModbus4
 ```csharp
 class Program
 {
-    private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
-    
     static void Main(string[] args)
     {           
         myDevices = Creator.FromFile("addresses.csv");
@@ -29,7 +27,7 @@ class Program
     {
         if (quality)
         {
-             logger.Trace(sender.Name + ": " + sender.Value);
+             Console.WriteLine(sender.Name + ": " + sender.Value);
         }
     }
 }
