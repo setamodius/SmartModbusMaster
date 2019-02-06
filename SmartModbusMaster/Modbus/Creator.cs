@@ -112,6 +112,7 @@
                 logger.Error("File not found - {0}", filename);
                 return false;
             }
+
             HashSet<string> taglist = new HashSet<string>();
             string[] allLines;
             try
@@ -123,6 +124,7 @@
                 logger.Error(ex);
                 return false;
             }
+
             foreach (var line in allLines)
             {
                 if (line.StartsWith("//"))
@@ -162,6 +164,7 @@
                     taglist.Add(line);
                 }
             }
+
             foreach (var tagstring in taglist)
             {
                 string[] splittedLine = tagstring.Split(_Seperator_);
@@ -262,12 +265,14 @@
                             ushortrange);
                     }
                 }
+
                 aTag.TagDirection = direction == "write" ? Direction.Write : Direction.Read;
                 ushort[] addresses = ParseAddressString(addressstring);
                 foreach (var anaddress in addresses)
                 {
                     aTag.InnerTag.AddAddress(anaddress);
                 }
+
                 if (myDevices.ContainsKey(devicename))
                 {
                     myDevices[devicename].Collection.AddTag(aTag);
