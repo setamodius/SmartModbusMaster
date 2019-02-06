@@ -1,5 +1,6 @@
 ﻿namespace Kr.Communication.SmartModbusMaster.Modbus
 {
+    using System;
     using System.Collections.Generic;
     using TagManagement;
 
@@ -14,6 +15,7 @@
         }
 
         public event TagStatusChangeEventHandler TagStatusChanged;
+        public event EventHandler<DeviceStatusChangedEventArgs> DeviceStatusChanged;
 
         public void KillAllDevices()
         {
@@ -51,10 +53,21 @@
                 return;
             }
             base.Add(devicename, device);
+            device.ConnectionStatusChanged += Device_ConnectionStatusChanged;
             device.Collection.TagStatusChanged += delegate (Tag sender, object value, bool quality)
             {
                 TagStatusChanged?.Invoke(sender, value, quality);
             };
         }
+
+        private void Device_ConnectionStatusChanged(object sender, EventArgs e)
+        {
+            DeviceStatusChanged?.Invoke(this, new DeviceStatusChangedEventArgs { ChangedDevice = (Device)sender });
+        }
+    }
+
+    public class DeviceStatusChangedEventArgs:EventArgs
+    {
+        public Device ChangedDevice { get; set; }
     }
 }

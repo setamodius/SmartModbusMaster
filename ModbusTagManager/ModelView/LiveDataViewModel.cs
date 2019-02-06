@@ -140,7 +140,13 @@ namespace ModbusTagManager.ModelView
             {
                 System.Windows.MessageBox.Show("File not found or inaccessible", "File Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
+            myDevices.DeviceStatusChanged += MyDevices_DeviceStatusChanged;
             Create();
+        }
+
+        private void MyDevices_DeviceStatusChanged(object sender, DeviceStatusChangedEventArgs e)
+        {
+            
         }
 
         private void StartDevices(object obj)

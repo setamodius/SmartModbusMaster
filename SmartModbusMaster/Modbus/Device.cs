@@ -12,6 +12,7 @@
         private bool isdeviceConnected = false;
         private ModbusMaster myModbusMaster;
         private readonly Queue<Tag> writequeue = new Queue<Tag>();
+        public event EventHandler ConnectionStatusChanged;
 
         public Device(string name, string ip, int port, byte deviceid, int refreshrate, bool isactive)
         {
@@ -45,6 +46,8 @@
         public int Port { get; set; }
 
         public int RefreshRate { get; set; }
+
+        public bool IsConnected { get; set; }
 
         public void Dispose()
         {
@@ -84,6 +87,8 @@
         private void MyModbusMaster_ConnectionStateChanged(ModbusMaster sender, bool status)
         {
             isdeviceConnected = status;
+            IsConnected = status;
+            ConnectionStatusChanged?.Invoke(this, EventArgs.Empty);
             foreach (var item in Collection.GetAllTags())
             {
                 item.Quality = status;
