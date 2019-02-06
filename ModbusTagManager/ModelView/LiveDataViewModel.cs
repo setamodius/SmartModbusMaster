@@ -27,45 +27,10 @@ namespace ModbusTagManager.ModelView
         public LiveDataViewModel()
         {
             Status = LiveDataViewModelStatuses.Idle;
-            FileOpenCommand = new RelayCommand(openFile, checkFile);
-            StartCommand = new RelayCommand(startDevices, checkStatus);
-            WriteCommand = new RelayCommand(writeTag, canWrite);
+            FileOpenCommand = new RelayCommand(OpenFile, CheckFile);
+            StartCommand = new RelayCommand(StartDevices, CheckStatus);
+            WriteCommand = new RelayCommand(WriteTag, CanWrite);
             CurrentTags = new ObservableCollection<TagResult>();
-        }
-
-        private bool canWrite(object obj)
-        {
-            TagResult tag = obj as TagResult;
-            if (Status != LiveDataViewModelStatuses.Running)
-            {
-                return false;
-            }
-            if (tag == null)
-            {
-                return false;
-            }
-            if (tag.TagType == typeof(bool))
-            {
-                bool boolresult = false;
-                return bool.TryParse(tag.WriteValue, out boolresult);
-            }
-            if (tag.TagType == typeof(float))
-            {
-                float floatresult = float.MinValue;
-                return float.TryParse(tag.WriteValue, out floatresult);
-            }
-            if (tag.TagType == typeof(ushort))
-            {
-                ushort ushortresult = ushort.MinValue;
-                return ushort.TryParse(tag.WriteValue, out ushortresult);
-            }
-            return false;
-        }
-
-        private void writeTag(object obj)
-        {
-            TagResult tag = obj as TagResult;
-            myDevices.WriteTag(tag.Name, Convert.ChangeType(tag.WriteValue, tag.TagType));
         }
 
         public ObservableCollection<TagResult> CurrentTags
@@ -84,16 +49,43 @@ namespace ModbusTagManager.ModelView
 
         public ICommand StartCommand { get; set; }
 
-        public ICommand WriteCommand { get; set; }
-
         public LiveDataViewModelStatuses Status
         {
             get { return _status; }
             set { SetProperty(ref _status, value); }
         }
 
-        private bool checkFile(object obj)
-        {            
+        public ICommand WriteCommand { get; set; }
+
+        private bool CanWrite(object obj)
+        {
+            if (Status != LiveDataViewModelStatuses.Running)
+            {
+                return false;
+            }
+            if (!(obj is TagResult tag))
+            {
+                return false;
+            }
+            if (tag.TagType == typeof(bool))
+            {
+                return bool.TryParse(tag.WriteValue, out bool boolresult);
+            }
+            if (tag.TagType == typeof(float))
+            {
+                float floatresult = float.MinValue;
+                return float.TryParse(tag.WriteValue, out floatresult);
+            }
+            if (tag.TagType == typeof(ushort))
+            {
+                ushort ushortresult = ushort.MinValue;
+                return ushort.TryParse(tag.WriteValue, out ushortresult);
+            }
+            return false;
+        }
+
+        private bool CheckFile(object obj)
+        {
             if (obj == null || string.IsNullOrWhiteSpace(obj.ToString()))
             {
                 return false;
@@ -101,7 +93,7 @@ namespace ModbusTagManager.ModelView
             return true;
         }
 
-        private bool checkStatus(object obj)
+        private bool CheckStatus(object obj)
         {
             if (Status == LiveDataViewModelStatuses.Ready)
             {
@@ -109,7 +101,8 @@ namespace ModbusTagManager.ModelView
             }
             return false;
         }
-        private void create()
+
+        private void Create()
         {
             CurrentTags.Clear();
             tagDictionary.Clear();
@@ -132,7 +125,7 @@ namespace ModbusTagManager.ModelView
             Status = LiveDataViewModelStatuses.Ready;
         }
 
-        private void openFile(object obj)
+        private void OpenFile(object obj)
         {
             if (!File.Exists(obj.ToString()))
             {
@@ -145,22 +138,29 @@ namespace ModbusTagManager.ModelView
             myDevices = Creator.FromFile(obj.ToString());
             if (myDevices == ModbusDevices.Empty)
             {
-                System.Windows.MessageBox.Show("File not found or inaccessible","File Error",System.Windows.MessageBoxButton.OK,System.Windows.MessageBoxImage.Error);
+                System.Windows.MessageBox.Show("File not found or inaccessible", "File Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
             }
-            create();
+            Create();
         }
 
-        private void startDevices(object obj)
+        private void StartDevices(object obj)
         {
             myDevices.StartDevices();
             Status = LiveDataViewModelStatuses.Running;
         }
+
         private void Tag_TagStatusChanged(Kr.Communication.SmartModbusMaster.TagManagement.Tag sender, object value, bool quality)
         {
             if (tagDictionary.ContainsKey(sender.Name))
             {
                 tagDictionary[sender.Name].SetTag(sender);
             }
+        }
+
+        private void WriteTag(object obj)
+        {
+            TagResult tag = obj as TagResult;
+            myDevices.WriteTag(tag.Name, Convert.ChangeType(tag.WriteValue, tag.TagType));
         }
     }
 }

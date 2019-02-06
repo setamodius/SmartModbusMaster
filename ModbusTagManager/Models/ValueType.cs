@@ -11,8 +11,8 @@
         {
             Bool,Ushort,FloatLSRF,FloatMSRF
         };
-                
 
+       
         private ValueType(string value, string nick)
         {
             Value = value;

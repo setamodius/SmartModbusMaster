@@ -13,9 +13,8 @@ namespace ModbusTagManager
     {
         #region Fields
 
-        private readonly Action<object> _execute;
         private readonly Predicate<object> _canExecute;
-
+        private readonly Action<object> _execute;
         #endregion Fields
 
         #region Constructors
@@ -36,10 +35,7 @@ namespace ModbusTagManager
         /// <param name="canExecute">The execution status logic.</param>
         public RelayCommand(Action<object> execute, Predicate<object> canExecute)
         {
-            if (execute == null)
-                throw new ArgumentNullException("execute");
-
-            _execute = execute;
+            _execute = execute ?? throw new ArgumentNullException("execute");
             _canExecute = canExecute;
         }
 
@@ -47,18 +43,17 @@ namespace ModbusTagManager
 
         #region ICommand Members
 
-        [DebuggerStepThrough]
-        public bool CanExecute(object parameters)
-        {
-            return _canExecute == null ? true : _canExecute(parameters);
-        }
-
         public event EventHandler CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
         }
 
+        [DebuggerStepThrough]
+        public bool CanExecute(object parameters)
+        {
+            return _canExecute == null ? true : _canExecute(parameters);
+        }
         public void Execute(object parameters)
         {
             _execute(parameters);

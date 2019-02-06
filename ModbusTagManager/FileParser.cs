@@ -14,74 +14,8 @@ namespace ModbusTagManager
     {
         public const string separator = ",";
 
-        public static void SaveFile(IEnumerable<DeviceModel> values, string filename)
-        {
-            StringBuilder fileDeviceString = new StringBuilder();
-            StringBuilder fileTagString = new StringBuilder();
-
-            foreach (var item in values)
-            {
-                DeviceModel deviceModelItem = item as DeviceModel;
-                if (deviceModelItem == null)
-                {
-                    break;
-                }
-               
-                    string deviceInfoline = string.Format("//device{0}Device{0}Ip{0}Port{0}DeviceId{0}RefreshRate{0}IsActive", separator);
-                    string deviceline = string.Format("device{0}{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}",
-                    separator,
-                    deviceModelItem.Name,
-                    deviceModelItem.Ip,
-                    deviceModelItem.Port,
-                    deviceModelItem.DeviceId,
-                    deviceModelItem.RefreshRate,
-                    deviceModelItem.IsActive ? "1" : "0");
-
-                    if (fileDeviceString.Length==0)
-                    {
-                       fileDeviceString.AppendLine(deviceInfoline); 
-                    }
-                    
-                    fileDeviceString.AppendLine(deviceline);
-                
-                
-                
-                foreach (var tag in deviceModelItem.Tags)
-                {
-                    TagModel tagModelItem = tag as TagModel;
-                    if (tagModelItem == null)
-                    {
-                        break;
-                    }                    								
-
-                    string tagInfoline = string.Format("//tag{0}Tag{0}Device{0}Address{0}ModbusType(cs/is/hr/ir){0}Direction(read/write){0}Type(bool/ushort/lsfr/msrf){0}MaskType(none/andmask/ormask){0}Mask{0}MergeType(andmerge/ormerge){0}Range", separator);
-                    string tagline = string.Format("tag{0}{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}{0}{7}{0}{8}{0}{9}{0}{10}",
-                    separator,
-                    tagModelItem.Name,
-                    deviceModelItem.Name,
-                    tagModelItem.AddressString,
-                    tagModelItem.TagModbusType.Nick,
-                    tagModelItem.TagDirectionType.Nick,
-                    tagModelItem.TagValueType.Nick,
-                    tagModelItem.TagMaskType.Nick,
-                    tagModelItem.Mask,
-                    tagModelItem.TagMergeType.Nick,
-                    tagModelItem.Range);
-
-                    if (fileTagString.Length == 0)
-                    {
-                        fileTagString.AppendLine(tagInfoline);
-                    }
-
-                    fileTagString.AppendLine(tagline);
-                }
-            }
-            
-            File.AppendAllText(filename,fileDeviceString.ToString()+fileTagString.ToString());
-        }
-
         public static ObservableCollection<DeviceModel> ReadFile(string filename)
-        {            
+        {
             string[] allLines = File.ReadAllLines(filename);
 
             var devices = from line in allLines
@@ -107,15 +41,15 @@ namespace ModbusTagManager
                            AddressString = data[3],
                            TagModbusType = data[4],
                            Direction = data[5],
-                           TagValueType = data[6], 
+                           TagValueType = data[6],
                            TagMaskType = data[7],
                            Mask = data[8],
                            TagMergeType = data[9],
                            Range = data[10]
-                       }; 
-           
+                       };
 
-            Dictionary<string,DeviceModel> allDevices=new Dictionary<string,DeviceModel>();
+
+            Dictionary<string, DeviceModel> allDevices = new Dictionary<string, DeviceModel>();
 
             foreach (var device in devices)
             {
@@ -130,10 +64,11 @@ namespace ModbusTagManager
             {
                 if (allDevices.ContainsKey(tag.device))
                 {
-                    TagModel aTag = new TagModel();
-
-                    aTag.Name = tag.Name;
-                    aTag.AddressString = tag.AddressString;
+                    TagModel aTag = new TagModel
+                    {
+                        Name = tag.Name,
+                        AddressString = tag.AddressString
+                    };
                     #region TagModbusType
                     switch (tag.TagModbusType.Trim().ToLower())
                     {
@@ -151,7 +86,7 @@ namespace ModbusTagManager
                             break;
                         default:
                             break;
-                    } 
+                    }
                     #endregion
                     #region TagValueType
                     switch (tag.TagValueType.Trim().ToLower())
@@ -171,7 +106,7 @@ namespace ModbusTagManager
 
                         default:
                             break;
-                    } 
+                    }
                     #endregion
                     #region Direction
                     switch (tag.Direction.Trim().ToLower())
@@ -184,7 +119,7 @@ namespace ModbusTagManager
                             break;
                         default:
                             break;
-                    } 
+                    }
                     #endregion
                     #region TagMaskType
                     switch (tag.TagMaskType.Trim().ToLower())
@@ -195,7 +130,7 @@ namespace ModbusTagManager
                         case ("ormask"):
                             aTag.TagMaskType = Models.MaskType.OrMask;
                             break;
-                        
+
                         default:
                             aTag.TagMaskType = Models.MaskType.None;
                             break;
@@ -216,10 +151,10 @@ namespace ModbusTagManager
                     #endregion                    
                     aTag.Range = tag.Range;
 
-                    allDevices[tag.device].Tags.Add(aTag); 
+                    allDevices[tag.device].Tags.Add(aTag);
                 }
             }
-            
+
 
             ObservableCollection<DeviceModel> result = new ObservableCollection<DeviceModel>();
             foreach (var item in allDevices.Values)
@@ -228,7 +163,71 @@ namespace ModbusTagManager
             }
 
             return result;
+
+        }
+
+        public static void SaveFile(IEnumerable<DeviceModel> values, string filename)
+        {
+            StringBuilder fileDeviceString = new StringBuilder();
+            StringBuilder fileTagString = new StringBuilder();
+
+            foreach (var item in values)
+            {
+                if (!(item is DeviceModel deviceModelItem))
+                {
+                    break;
+                }
+
+                string deviceInfoline = string.Format("//device{0}Device{0}Ip{0}Port{0}DeviceId{0}RefreshRate{0}IsActive", separator);
+                    string deviceline = string.Format("device{0}{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}",
+                    separator,
+                    deviceModelItem.Name,
+                    deviceModelItem.Ip,
+                    deviceModelItem.Port,
+                    deviceModelItem.DeviceId,
+                    deviceModelItem.RefreshRate,
+                    deviceModelItem.IsActive ? "1" : "0");
+
+                    if (fileDeviceString.Length==0)
+                    {
+                       fileDeviceString.AppendLine(deviceInfoline); 
+                    }
+                    
+                    fileDeviceString.AppendLine(deviceline);
+                
+                
+                
+                foreach (var tag in deviceModelItem.Tags)
+                {
+                    if (!(tag is TagModel tagModelItem))
+                    {
+                        break;
+                    }
+
+                    string tagInfoline = string.Format("//tag{0}Tag{0}Device{0}Address{0}ModbusType(cs/is/hr/ir){0}Direction(read/write){0}Type(bool/ushort/lsfr/msrf){0}MaskType(none/andmask/ormask){0}Mask{0}MergeType(andmerge/ormerge){0}Range", separator);
+                    string tagline = string.Format("tag{0}{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}{6}{0}{7}{0}{8}{0}{9}{0}{10}",
+                    separator,
+                    tagModelItem.Name,
+                    deviceModelItem.Name,
+                    tagModelItem.AddressString,
+                    tagModelItem.TagModbusType.Nick,
+                    tagModelItem.TagDirectionType.Nick,
+                    tagModelItem.TagValueType.Nick,
+                    tagModelItem.TagMaskType.Nick,
+                    tagModelItem.Mask,
+                    tagModelItem.TagMergeType.Nick,
+                    tagModelItem.Range);
+
+                    if (fileTagString.Length == 0)
+                    {
+                        fileTagString.AppendLine(tagInfoline);
+                    }
+
+                    fileTagString.AppendLine(tagline);
+                }
+            }
             
+            File.WriteAllText(filename,fileDeviceString.ToString()+fileTagString.ToString());
         }
     }
 }

@@ -8,9 +8,7 @@
         public static DirectionType[] Types = new DirectionType[]
         {
             Read,Write
-        };
-
-        
+        };        
 
         private DirectionType(string value, string nick)
         {

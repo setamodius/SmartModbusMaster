@@ -16,23 +16,18 @@ namespace ModbusTagManager
         {
             InitializeComponent();
         }
-        
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            
-        }
 
-        private void browseButtonClicked(object sender, RoutedEventArgs e)
+        private void BrowseButtonClicked(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog myOpenFileDialog = new OpenFileDialog();       
+            OpenFileDialog myOpenFileDialog = new OpenFileDialog();
             if (myOpenFileDialog.ShowDialog() == true)
             {
                 tbxFileLocation.Text = myOpenFileDialog.FileName;
             }
         }
 
-        private void btnOpenClick(object sender, RoutedEventArgs e)
-        {            
+        private void BtnOpenClick(object sender, RoutedEventArgs e)
+        {
             if (!System.IO.File.Exists(tbxFileLocation.Text))
             {
                 MessageBox.Show("File not found", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -40,25 +35,29 @@ namespace ModbusTagManager
             }
         }
 
-        private void btnOpenFile_Click(object sender, RoutedEventArgs e)
+        private void BtnOpenFile_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog myOpenFileDialog = new OpenFileDialog();
             if (myOpenFileDialog.ShowDialog() == true)
             {
-                DesignData.DesignDataReference.ReadDataFromFile(myOpenFileDialog.FileName);                
+                DesignData.DesignDataReference.ReadDataFromFile(myOpenFileDialog.FileName);
             }
         }
 
-        private void btnSaveFile_Click(object sender, RoutedEventArgs e)
+        private void BtnSaveFile_Click(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog mySaveFileDialog = new SaveFileDialog();                    
-           
+            SaveFileDialog mySaveFileDialog = new SaveFileDialog();
+
             if (mySaveFileDialog.ShowDialog() == true)
             {
-                ModbusTagManager.FileParser.SaveFile(DesignData.DesignDataReference.GetAllData,mySaveFileDialog.FileName);                
+                ModbusTagManager.FileParser.SaveFile(DesignData.DesignDataReference.GetAllData, mySaveFileDialog.FileName);
             }
-            MessageBox.Show("Tags saved.","Info",MessageBoxButton.OK,MessageBoxImage.Information);
+            MessageBox.Show("Tags saved.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-        
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }

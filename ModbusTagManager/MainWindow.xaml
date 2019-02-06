@@ -94,8 +94,8 @@
                             <local:DesignData />
                         </TreeView.DataContext>
                     </TreeView>
-                    <Button x:Name="BtnOpen" Content="Open" Margin="32,0,178,8" VerticalAlignment="Bottom" Height="24" Grid.Column="1" Click="btnOpenFile_Click" />
-                    <Button x:Name="BtnSave" Content="Save" Margin="147,0,63,8" VerticalAlignment="Bottom" Height="24" Grid.Column="1" Click="btnSaveFile_Click" />
+                    <Button x:Name="BtnOpen" Content="Open" Margin="32,0,178,8" VerticalAlignment="Bottom" Height="24" Grid.Column="1" Click="BtnOpenFile_Click" />
+                    <Button x:Name="BtnSave" Content="Save" Margin="147,0,63,8" VerticalAlignment="Bottom" Height="24" Grid.Column="1" Click="BtnSaveFile_Click" />
                 </Grid>
                 <GridSplitter x:Name="gridSplitter" HorizontalAlignment="Stretch" Margin="0" ResizeDirection="Columns" Grid.Column="1" />
                 <Grid Margin="0" Grid.Column="2" DataContext="{Binding SelectedItem, ElementName=treeView, Mode=OneWay}">
@@ -182,7 +182,7 @@
                         <TextBox Margin="0,0,4,0" Grid.Row="5" TextWrapping="Wrap" Grid.Column="3" Height="22" Text="{Binding Range}" />
                         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Range" Margin="8,0,0,0" Grid.Row="5" Grid.Column="2" d:LayoutOverrides="Height" VerticalAlignment="Center" />
                         <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Direction" Margin="10,0,0,0" Grid.Row="3" Grid.Column="2" d:LayoutOverrides="Height" VerticalAlignment="Center" />
-                        <ComboBox Margin="0,0,4,0" Grid.Column="3" Grid.Row="3" Height="22" ItemsSource="{Binding Source={x:Static models:DirectionType.Types}}" DisplayMemberPath="Value"  SelectedItem="{Binding TagDirectionType}" />
+                        <ComboBox Margin="0,0,4,0" Grid.Column="3" Grid.Row="3" Height="22" ItemsSource="{Binding Source={x:Static models:DirectionType.Types}}" DisplayMemberPath="Value" SelectedItem="{Binding TagDirectionType}" />
                     </Grid>
                 </Grid>
             </Grid>
@@ -203,7 +203,7 @@
                 <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,12.02,0,2.02" TextWrapping="Wrap" Text="CSV File Path :" VerticalAlignment="Center" />
                 <TextBox x:Name="tbxFileLocation" Margin="110,11.02,90,1.02" TextWrapping="Wrap" VerticalAlignment="Center" Grid.ColumnSpan="2" Text="{Binding FilePath}" IsReadOnly="True" />
                 <Button Content="Open" HorizontalAlignment="Right" Margin="0,10.02,10,0.02" Width="75" VerticalAlignment="Center" Grid.Column="1" Command="{Binding FileOpenCommand}" CommandParameter="{Binding Text, ElementName=tbxFileLocation}" />
-                <Button Content="Browse" Margin="53.913,11.793,90,1.793" VerticalAlignment="Center" FontSize="9.333" Grid.Column="1" d:LayoutOverrides="Width" Click="browseButtonClicked" />
+                <Button Content="Browse" Margin="53.913,11.793,90,1.793" VerticalAlignment="Center" FontSize="9.333" Grid.Column="1" d:LayoutOverrides="Width" Click="BrowseButtonClicked" />
                 <Button Content="Stop" Height="24" Margin="0,39,10,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" />
                 <TextBlock Grid.Column="1" Margin="0,70,0,60.98" Grid.Row="1" TextWrapping="Wrap" Text="{Binding Status}" HorizontalAlignment="Left" FontWeight="Bold" d:LayoutOverrides="Height" Grid.RowSpan="2" />
                 <TextBlock Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Text="{Binding DeviceCount, Mode=OneWay, StringFormat=\{0:D\} device(s)}" VerticalAlignment="Top" Margin="0,90.82,0,0" Grid.RowSpan="2" />

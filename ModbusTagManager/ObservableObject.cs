@@ -10,11 +10,7 @@ namespace ModbusTagManager
 
         protected void OnPropertyChanged([CallerMemberName] string propName = null)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
         protected bool SetProperty<T>(ref T storage, T value,

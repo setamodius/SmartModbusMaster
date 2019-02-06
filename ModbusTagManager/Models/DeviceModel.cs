@@ -9,6 +9,7 @@ namespace ModbusTagManager.Models
         private string _ip;
 
         private bool _isactive;
+
         private bool _isdevice;
 
         private string _name;

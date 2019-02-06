@@ -7,11 +7,15 @@ namespace ModbusTagManager.Models
     public class TagResult : ObservableObject
     {
         private string _function;
+        private bool _isWrite;
         private string _name;
 
         private bool _quality;
 
+        private Type _tagType;
         private object _value;
+
+        private string _writeValue;
 
         public TagResult(Tag tag)
         {
@@ -22,6 +26,12 @@ namespace ModbusTagManager.Models
         {
             get { return _function; }
             set { SetProperty(ref _function, value); }
+        }
+
+        public bool IsWrite
+        {
+            get { return _isWrite; }
+            set { SetProperty(ref _isWrite, value); }
         }
 
         public string Name
@@ -36,35 +46,22 @@ namespace ModbusTagManager.Models
             set { SetProperty(ref _quality, value); }
         }
 
-        public object Value
-        {
-            get { return _value; }
-            set { SetProperty(ref _value, value); }
-        }
-
-        private bool _isWrite;
-
-        public bool IsWrite
-        {
-            get { return _isWrite; }
-            set { SetProperty(ref _isWrite, value); }
-        }
-
-        private string _writeValue;
-
-        public string WriteValue
-        {
-            get { return _writeValue; }
-            set { SetProperty(ref _writeValue, value); }
-        }
-        private Type _tagType;
-
         public Type TagType
         {
             get { return _tagType; }
             set { _tagType = value; }
         }
 
+        public object Value
+        {
+            get { return _value; }
+            set { SetProperty(ref _value, value); }
+        }
+        public string WriteValue
+        {
+            get { return _writeValue; }
+            set { SetProperty(ref _writeValue, value); }
+        }
         public void SetTag(Tag tag)
         {
             Name = tag.Name;
