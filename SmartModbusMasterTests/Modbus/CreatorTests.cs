@@ -6,7 +6,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
     public class CreatorTests
     {
         [TestMethod()]
-        public void parseAddressStringTest0()
+        public void ParseAddressStringTest0()
         {
             string addressstring = "";
             ushort[] parsedAddress = Creator.ParseAddressString(addressstring);
@@ -14,7 +14,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
         }
 
         [TestMethod()]
-        public void parseAddressStringTest1()
+        public void ParseAddressStringTest1()
         {
             string addressstring = "23";
             ushort[] parsedAddress = Creator.ParseAddressString(addressstring);
@@ -23,7 +23,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
         }
 
         [TestMethod()]
-        public void parseAddressStringTest2()
+        public void ParseAddressStringTest2()
         {
             string addressstring = "23 27 29";
             ushort[] parsedAddress = Creator.ParseAddressString(addressstring);
@@ -34,7 +34,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
         }
 
         [TestMethod()]
-        public void parseAddressStringTest3()
+        public void ParseAddressStringTest3()
         {
             string addressstring = "23-27";
             ushort[] parsedAddress = Creator.ParseAddressString(addressstring);
@@ -47,7 +47,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
         }
 
         [TestMethod()]
-        public void parseAddressStringTest4()
+        public void ParseAddressStringTest4()
         {
             string addressstring = "23-27-";
             ushort[] parsedAddress = Creator.ParseAddressString(addressstring);
@@ -55,7 +55,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
         }
 
         [TestMethod()]
-        public void parseAddressStringTest5()
+        public void ParseAddressStringTest5()
         {
             string addressstring = "-23-27";
             ushort[] parsedAddress = Creator.ParseAddressString(addressstring);
@@ -63,7 +63,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
         }
 
         [TestMethod()]
-        public void parseAddressStringTest6()
+        public void ParseAddressStringTest6()
         {
             string addressstring = "-23-27-";
             ushort[] parsedAddress = Creator.ParseAddressString(addressstring);
@@ -71,7 +71,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
         }
 
         [TestMethod()]
-        public void parseAddressStringTest7()
+        public void ParseAddressStringTest7()
         {
             string addressstring = "  ";
             ushort[] parsedAddress = Creator.ParseAddressString(addressstring);
@@ -79,7 +79,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
         }
 
         [TestMethod()]
-        public void parseAddressStringTest8()
+        public void ParseAddressStringTest8()
         {
             string addressstring = "23-27 ";
             ushort[] parsedAddress = Creator.ParseAddressString(addressstring);
@@ -92,7 +92,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
         }
 
         [TestMethod()]
-        public void parseAddressStringTest9()
+        public void ParseAddressStringTest9()
         {
             string addressstring = " 23-27";
             ushort[] parsedAddress = Creator.ParseAddressString(addressstring);
@@ -105,7 +105,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
         }
 
         [TestMethod()]
-        public void parseAddressStringTest10()
+        public void ParseAddressStringTest10()
         {
             string addressstring = " 23-27 ";
             ushort[] parsedAddress = Creator.ParseAddressString(addressstring);
@@ -118,7 +118,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
         }
 
         [TestMethod()]
-        public void parseAddressStringTest11()
+        public void ParseAddressStringTest11()
         {
             string addressstring = "23 27 29 ";
             ushort[] parsedAddress = Creator.ParseAddressString(addressstring);
@@ -129,7 +129,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
         }
 
         [TestMethod()]
-        public void parseAddressStringTest12()
+        public void ParseAddressStringTest12()
         {
             string addressstring = " 23 27 29";
             ushort[] parsedAddress = Creator.ParseAddressString(addressstring);
@@ -140,7 +140,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
         }
 
         [TestMethod()]
-        public void parseAddressStringTest13()
+        public void ParseAddressStringTest13()
         {
             string addressstring = " 23 27 29 ";
             ushort[] parsedAddress = Creator.ParseAddressString(addressstring);
@@ -151,7 +151,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
         }
 
         [TestMethod()]
-        public void parseAddressStringTest14()
+        public void ParseAddressStringTest14()
         {
             string addressstring = "23-27 28";
             ushort[] parsedAddress = Creator.ParseAddressString(addressstring);
@@ -165,7 +165,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
         }
 
         [TestMethod()]
-        public void parseAddressStringTest15()
+        public void ParseAddressStringTest15()
         {
             string addressstring = "23 -3";
             ushort[] parsedAddress = Creator.ParseAddressString(addressstring);
@@ -178,7 +178,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
         }
 
         [TestMethod()]
-        public void parseAddressStringTest16()
+        public void ParseAddressStringTest16()
         {
             string addressstring = "3- 27";
             ushort[] parsedAddress = Creator.ParseAddressString(addressstring);
@@ -191,7 +191,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
         }
 
         [TestMethod()]
-        public void parseAddressStringTest17()
+        public void ParseAddressStringTest17()
         {
             string addressstring = "10 23-27 28";
             ushort[] parsedAddress = Creator.ParseAddressString(addressstring);
@@ -206,7 +206,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
         }
 
         [TestMethod()]
-        public void parseAddressStringTest18()
+        public void ParseAddressStringTest18()
         {
             string addressstring = "10 23-27 ";
             ushort[] parsedAddress = Creator.ParseAddressString(addressstring);
@@ -220,7 +220,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus.Tests
         }
 
         [TestMethod()]
-        public void parseAddressStringTest19()
+        public void ParseAddressStringTest19()
         {
             string addressstring = "10 23-27 25-28";
             ushort[] parsedAddress = Creator.ParseAddressString(addressstring);

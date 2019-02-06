@@ -20,7 +20,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Types.Tests
             BoolTag myTag = new BoolTag(StatusFunction.InputStatus);
             myTag.AddAddress(5);
             myTag.AddAddress(12);
-            myTag.SetData(getModbusBoolValues());
+            myTag.SetData(GetModbusBoolValues());
         }
 
         [TestMethod()]
@@ -31,7 +31,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Types.Tests
             myTag.AddAddress(4); // true
             myTag.AddAddress(5); // false
             myTag.MergeType = TagAddressMergeType.AndMerge;
-            myTag.SetData(getModbusBoolValues());
+            myTag.SetData(GetModbusBoolValues());
             Assert.AreEqual(false, myTag.Value);
         }
 
@@ -42,7 +42,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Types.Tests
             myTag.AddAddress(3); // true
             myTag.AddAddress(4); // true
             myTag.MergeType = TagAddressMergeType.AndMerge;
-            myTag.SetData(getModbusBoolValues());
+            myTag.SetData(GetModbusBoolValues());
             Assert.AreEqual(true, myTag.Value);
         }
 
@@ -53,7 +53,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Types.Tests
             myTag.AddAddress(8); // false
             myTag.AddAddress(9); // false
             myTag.MergeType = TagAddressMergeType.AndMerge;
-            myTag.SetData(getModbusBoolValues());
+            myTag.SetData(GetModbusBoolValues());
             Assert.AreEqual(false, myTag.Value);
         }
 
@@ -65,7 +65,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Types.Tests
             myTag.AddAddress(4); // true
             myTag.AddAddress(5); // false
             myTag.MergeType = TagAddressMergeType.OrMerge;
-            myTag.SetData(getModbusBoolValues());
+            myTag.SetData(GetModbusBoolValues());
             Assert.AreEqual(true, myTag.Value);
         }
 
@@ -76,7 +76,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Types.Tests
             myTag.AddAddress(3); // true
             myTag.AddAddress(4); // true
             myTag.MergeType = TagAddressMergeType.OrMerge;
-            myTag.SetData(getModbusBoolValues());
+            myTag.SetData(GetModbusBoolValues());
             Assert.AreEqual(true, myTag.Value);
         }
 
@@ -87,7 +87,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Types.Tests
             myTag.AddAddress(8); // false
             myTag.AddAddress(9); // false
             myTag.MergeType = TagAddressMergeType.OrMerge;
-            myTag.SetData(getModbusBoolValues());
+            myTag.SetData(GetModbusBoolValues());
             Assert.AreEqual(false, myTag.Value);
         }
 
@@ -98,7 +98,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Types.Tests
             myTag.AddAddress(3); // true
             myTag.MaskType = TagAddressMaskType.AndMask;
             myTag.Mask = true;
-            myTag.SetData(getModbusBoolValues());
+            myTag.SetData(GetModbusBoolValues());
             Assert.AreEqual(true, myTag.Value);
         }
 
@@ -109,7 +109,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Types.Tests
             myTag.AddAddress(3); // true
             myTag.MaskType = TagAddressMaskType.AndMask;
             myTag.Mask = false;
-            myTag.SetData(getModbusBoolValues());
+            myTag.SetData(GetModbusBoolValues());
             Assert.AreEqual(false, myTag.Value);
         }
 
@@ -120,7 +120,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Types.Tests
             myTag.AddAddress(5); // false
             myTag.MaskType = TagAddressMaskType.AndMask;
             myTag.Mask = true;
-            myTag.SetData(getModbusBoolValues());
+            myTag.SetData(GetModbusBoolValues());
             Assert.AreEqual(false, myTag.Value);
         }
 
@@ -131,7 +131,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Types.Tests
             myTag.AddAddress(5); // false
             myTag.MaskType = TagAddressMaskType.AndMask;
             myTag.Mask = false;
-            myTag.SetData(getModbusBoolValues());
+            myTag.SetData(GetModbusBoolValues());
             Assert.AreEqual(false, myTag.Value);
         }
 
@@ -142,7 +142,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Types.Tests
             myTag.AddAddress(3); // true
             myTag.MaskType = TagAddressMaskType.OrMask;
             myTag.Mask = true;
-            myTag.SetData(getModbusBoolValues());
+            myTag.SetData(GetModbusBoolValues());
             Assert.AreEqual(true, myTag.Value);
         }
 
@@ -153,7 +153,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Types.Tests
             myTag.AddAddress(3); // true
             myTag.MaskType = TagAddressMaskType.OrMask;
             myTag.Mask = false;
-            myTag.SetData(getModbusBoolValues());
+            myTag.SetData(GetModbusBoolValues());
             Assert.AreEqual(true, myTag.Value);
         }
 
@@ -164,7 +164,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Types.Tests
             myTag.AddAddress(5); // false
             myTag.MaskType = TagAddressMaskType.OrMask;
             myTag.Mask = true;
-            myTag.SetData(getModbusBoolValues());
+            myTag.SetData(GetModbusBoolValues());
             Assert.AreEqual(true, myTag.Value);
         }
 
@@ -175,7 +175,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Types.Tests
             myTag.AddAddress(5); // false
             myTag.MaskType = TagAddressMaskType.OrMask;
             myTag.Mask = false;
-            myTag.SetData(getModbusBoolValues());
+            myTag.SetData(GetModbusBoolValues());
             Assert.AreEqual(false, myTag.Value);
         }
 
@@ -186,11 +186,11 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Types.Tests
             myTag.AddAddress(5); // false
             myTag.MaskType = TagAddressMaskType.None;
             myTag.Mask = true;
-            myTag.SetData(getModbusBoolValues());
+            myTag.SetData(GetModbusBoolValues());
             Assert.AreEqual(false, myTag.Value);
         }
 
-        public Dictionary<ushort, bool> getModbusBoolValues()
+        public Dictionary<ushort, bool> GetModbusBoolValues()
         {
             Dictionary<ushort, bool> results = new Dictionary<ushort, bool>();
             results.Add(1, true);
