@@ -1,11 +1,4 @@
-﻿// ********************************************************************
-//
-// Copyright (c) 2015, Kerem Bilgicer
-// All rights reserved.
-//
-// ********************************************************************
-
-namespace Kr.Communication.SmartModbusMaster.TagManagement.Collections
+﻿namespace Kr.Communication.SmartModbusMaster.TagManagement.Collections
 {
     using Modbus;
     using System.Collections.Generic;
@@ -22,7 +15,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Collections
         {
             if (!ContainsKey(name))
             {
-                addAddresses(tag);
+                AddAddresses(tag);
                 base.Add(name, tag);
             }
         }
@@ -45,7 +38,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Collections
             Maps = maps;
         }
 
-        private void addAddresses(ITagType tag)
+        private void AddAddresses(ITagType tag)
         {
             foreach (var item in tag.GetAddresses())
             {

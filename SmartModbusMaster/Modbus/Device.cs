@@ -1,11 +1,4 @@
-﻿// ********************************************************************
-//
-// Copyright (c) 2015 - 2016, Kerem Bilgicer
-// All rights reserved.
-//
-// ********************************************************************
-
-namespace Kr.Communication.SmartModbusMaster.Modbus
+﻿namespace Kr.Communication.SmartModbusMaster.Modbus
 {
     using System;
     using System.Collections.Generic;
@@ -18,11 +11,11 @@ namespace Kr.Communication.SmartModbusMaster.Modbus
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         private bool isdeviceConnected = false;
         private ModbusMaster myModbusMaster;
-        private Queue<Tag> writequeue = new Queue<Tag>();
+        private readonly Queue<Tag> writequeue = new Queue<Tag>();
 
         public Device(string name, string ip, int port, byte deviceid, int refreshrate, bool isactive)
         {
-            logger.Trace("{0} isimli {1} adresli cihaz olusturuluyor", name, ip);
+            logger.Trace("{0}({1}) device is creating.", name, ip);
             Name = name;
             Ip = ip;
             Port = port;
@@ -36,7 +29,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus
 
         ~Device()
         {
-            logger.Trace("{0} isimli {1} adresli cihaz yikiliyor", Name, Ip);
+            logger.Trace("{0}({1}) device is disposing.", Name, Ip);
         }
 
         public TagCollection Collection { get; private set; }
@@ -60,7 +53,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus
 
         public void Start()
         {
-            logger.Trace("{0} isimli {1} adresli cihaz baslatiliyor", Name, Ip);
+            logger.Trace("{0}({1}) device is starting.", Name, Ip);
             foreach (var item in Collection.GetAllTags())
             {
                 item.Quality = false;
@@ -74,17 +67,17 @@ namespace Kr.Communication.SmartModbusMaster.Modbus
 
             if (currentTag == null)
             {
-                logger.Error("{0} isimli {1} adresli cihaz icin tag yazilamıyor {2} isimli tag bulunamadi", Name, Ip, tagname);
+                logger.Error("{0}({1}) device write error. Tag not found : {2} ", Name, Ip, tagname);
                 return;
             }
-            logger.Trace("{0} isimli {1} adresli cihaz icin tag yaziliyor - {2}", Name, Ip, currentTag?.Name);
+            logger.Trace("{0}({1}) device write.  Tag name : {2} Tag Value : {3}", Name, Ip, currentTag?.Name, value);
             if (isdeviceConnected)
             {
-                writeTagHelper(currentTag, value);
+                WriteTagHelper(currentTag, value);
             }
             else
             {
-                logger.Warn("{0} isimli {1} adresli cihaz bagli degil tag yazilamadi - {2}", Name, Ip, tagname);
+                logger.Warn("{0}({1}) device not connected. Tag not written : {2} ", Name, Ip, tagname);
             }
         }
 
@@ -97,19 +90,19 @@ namespace Kr.Communication.SmartModbusMaster.Modbus
             }
         }
 
-        private void writeTagHelper(Tag tag, object value)
+        private void WriteTagHelper(Tag tag, object value)
         {
             if (value == null)
             {
-                logger.Error("{0} isimli {1} adresli cihaz icin yazılacak deger NULL", Name, Ip);
+                logger.Error("Value is NULL for {0}({1}) tag : {2}", Name, Ip, tag?.Name);
                 return;
             }
             if (tag.InnerTag == null)
             {
-                logger.Error("{0} isimli {1} adresli cihaz icin {2}.InnerTag = NULL", Name, Ip, tag.Name);
+                logger.Error("InnerTag is NULL for {0}({1}) tag : {2}", Name, Ip, tag.Name);
                 return;
             }
-            logger.Trace("{0} isimli {1} adresli cihaz icin - InnerTag={2}, value={3}", Name, Ip, tag.InnerTag.GetType().ToString(), value.GetType().ToString());
+            logger.Trace("{0}({1}) device - InnerTag={2}, value={3}", Name, Ip, tag.InnerTag.GetType().ToString(), value.GetType().ToString());
             if (tag.InnerTag is BoolTag && value is bool)
             {
                 var currentBoolTag = (BoolTag)tag.InnerTag;

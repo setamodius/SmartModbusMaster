@@ -1,11 +1,4 @@
-﻿// ********************************************************************
-//
-// Copyright (c) 2015, Kerem Bilgicer
-// All rights reserved.
-//
-// ********************************************************************
-
-namespace Kr.Communication.SmartModbusMaster.TagManagement.Collections
+﻿namespace Kr.Communication.SmartModbusMaster.TagManagement.Collections
 {
     using Modbus;
     using System.Collections.Generic;
@@ -43,7 +36,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Collections
                 && addingTag.InnerTag != null)
             {
                 allTags.Add(addingTag.Name, addingTag);
-                classificator(addingTag);
+                Classificator(addingTag);
                 return true;
             }
             return false;
@@ -106,7 +99,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Collections
             return null;
         }
 
-        private void classificator(Tag addingTag)
+        private void Classificator(Tag addingTag)
         {
             if (addingTag.TagDirection == Direction.Write)
             {

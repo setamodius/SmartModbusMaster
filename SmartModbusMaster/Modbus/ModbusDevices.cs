@@ -1,11 +1,4 @@
-﻿// ********************************************************************
-//
-// Copyright (c) 2015 - 2016, Kerem Bilgicer
-// All rights reserved.
-//
-// ********************************************************************
-
-namespace Kr.Communication.SmartModbusMaster.Modbus
+﻿namespace Kr.Communication.SmartModbusMaster.Modbus
 {
     using System.Collections.Generic;
     using TagManagement;
@@ -54,7 +47,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus
         {
             if (ContainsKey(devicename))
             {
-                logger.Warn("Cihaz daha onceden eklenmis - {0}", devicename);
+                logger.Warn("Device already added - {0}", devicename);
                 return;
             }
             base.Add(devicename, device);

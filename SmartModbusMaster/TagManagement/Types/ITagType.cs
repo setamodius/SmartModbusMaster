@@ -1,11 +1,4 @@
-﻿// ********************************************************************
-//
-// Copyright (c) 2015, Kerem Bilgicer
-// All rights reserved.
-//
-// ********************************************************************
-
-namespace Kr.Communication.SmartModbusMaster.TagManagement.Types
+﻿namespace Kr.Communication.SmartModbusMaster.TagManagement.Types
 {
     using Modbus;
 

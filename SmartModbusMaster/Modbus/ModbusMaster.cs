@@ -1,18 +1,9 @@
-﻿// ********************************************************************
-//
-// Copyright (c) 2015, Kerem Bilgicer
-// All rights reserved.
-//
-// ********************************************************************
-
-namespace Kr.Communication.SmartModbusMaster.Modbus
+﻿namespace Kr.Communication.SmartModbusMaster.Modbus
 {
     using global::Modbus.Device;
     using System;
-    using System.Collections.Generic;
     using System.Net.Sockets;
     using System.Runtime.InteropServices;
-    using System.Threading.Tasks;
     using System.Timers;
     using TagManagement.Types;
 
@@ -34,15 +25,15 @@ namespace Kr.Communication.SmartModbusMaster.Modbus
         {
             if (device == null)
             {
-                logger.Error("device = NULL");
+                logger.Error("device is NULL");
                 return;
             }
             myDevice = device;
             IpAddress = myDevice.Ip;
             ModbusPort = myDevice.Port;
-            logger.Debug("ModbusMaster kuruluyor - {0}", device.Name);
+            logger.Debug("ModbusMaster is creating - {0}", device.Name);
             myTimer.Interval = myDevice.RefreshRate;
-            myTimer.Elapsed += myTimer_Tick;
+            myTimer.Elapsed += MyTimer_Tick;
         }
 
         ~ModbusMaster()
@@ -69,7 +60,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus
 
         public void Dispose()
         {
-            logger.Debug("ModbusMaster yikiliyor - {0}", myDevice?.Name);
+            logger.Debug("ModbusMaster is disposing - {0}", myDevice?.Name);
             if (myTimer != null)
             {
                 myTimer.Stop();
@@ -87,7 +78,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus
 
         public void Start()
         {
-            logger.Debug("ModbusMaster baslatiliyor - {0}", myDevice?.Name);
+            logger.Debug("ModbusMaster is starting - {0}", myDevice?.Name);
             myTimer.Start();
         }
 
@@ -96,7 +87,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus
             foreach (var item in tag.GetAddresses())
             {
                 master.WriteSingleCoilAsync((ushort)(item - 1), tag.GetWriteValue());
-            }            
+            }
         }
 
         public void WriteFloatTagValue(FloatTag tag)
@@ -112,29 +103,24 @@ namespace Kr.Communication.SmartModbusMaster.Modbus
                 }
             }
         }
+
         public void WriteUshortTagValue(UshortTag tag)
         {
             try
             {
                 master.WriteSingleRegister((ushort)(tag.GetAddresses()[0] - 1), tag.GetWriteValue());
             }
-            catch 
+            catch
             {
                 WriteUshortTagValue(tag);
             }
-            //foreach (var item in tag.GetAddresses())
-            //{
-                
-            //    //var task = Task.Run(async () => { await master.WriteSingleRegisterAsync((ushort)(item - 1), tag.GetWriteValue()); });
-            //    //task.Wait();                
-            //}
         }
 
         [DllImport("WININET", CharSet = CharSet.Auto)]
         private static extern bool InternetGetConnectedState(ref InternetConnectionState lpdwFlags, int
         dwReserved);
 
-        private bool checkInternet()
+        private bool CheckInternet()
         {
             InternetConnectionState flag = InternetConnectionState.INTERNET_CONNECTION_LAN;
             return InternetGetConnectedState(ref flag, 0);
@@ -146,7 +132,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus
                 master.Dispose();
             if (tcpClient != null)
                 tcpClient.Close();
-            if (checkInternet())
+            if (CheckInternet())
             {
                 try
                 {
@@ -156,14 +142,14 @@ namespace Kr.Communication.SmartModbusMaster.Modbus
                     if (!asyncResult.IsCompleted)
                     {
                         tcpClient.Close();
-                        logger.Warn("Server'a baglanilamiyor - {0}", IpAddress);
+                        logger.Warn("Not connecting to server - {0}", IpAddress);
                         return false;
                     }
                     // create Modbus TCP Master by the tcpclient
                     master = ModbusIpMaster.CreateIp(tcpClient);
                     master.Transport.Retries = 0; //don't have to do retries
                     //master.Transport.ReadTimeout = 1500;
-                    logger.Debug("Server'a baglanildi - {0}", IpAddress);
+                    logger.Debug("Connected to server - {0}", IpAddress);
                     isreading = false;
                     return tcpClient.Connected;
                 }
@@ -176,7 +162,7 @@ namespace Kr.Communication.SmartModbusMaster.Modbus
             return false;
         }
 
-        private void myTimer_Tick(object sender, EventArgs e)
+        private void MyTimer_Tick(object sender, EventArgs e)
         {
             //WriteToConsole(this.GetHashCode().ToString());
             try
@@ -189,24 +175,24 @@ namespace Kr.Communication.SmartModbusMaster.Modbus
 
                 if (networkIsOk && !isreading)
                 {
-                    readValues();
+                    ReadValues();
                 }
                 else
                 {
                     dtNow = DateTime.Now;
                     if ((dtNow - dtDisconnect) > TimeSpan.FromSeconds(10))
                     {
-                        logger.Debug("Baglanilmaya calisiyor - {0}", IpAddress);
+                        logger.Debug("Trying to connect - {0}", IpAddress);
                         networkIsOk = Connect();
                         if (!networkIsOk)
                         {
-                            logger.Warn("Baglanilamadi - {0}", IpAddress);
+                            logger.Warn("Not connected - {0}", IpAddress);
                             dtDisconnect = DateTime.Now;
                         }
                     }
                     else
                     {
-                        logger.Trace("Yeniden baglanmak icin bekleniyor - {0}", IpAddress);                        
+                        logger.Trace("Waiting for reconnect - {0}", IpAddress);
                     }
                 }
             }
@@ -217,11 +203,11 @@ namespace Kr.Communication.SmartModbusMaster.Modbus
                     networkIsOk = false;
                     dtDisconnect = DateTime.Now;
                 }
-                logger.Warn(ex);                
+                logger.Warn(ex);
             }
         }
 
-        private void readValues()
+        private void ReadValues()
         {
             System.Diagnostics.Stopwatch myWatch = new System.Diagnostics.Stopwatch();
             myWatch.Start();
@@ -269,6 +255,6 @@ namespace Kr.Communication.SmartModbusMaster.Modbus
             isreading = false;
             myWatch.Stop();
             //WriteToConsole(myWatch.ElapsedMilliseconds.ToString() + " ms");
-        }        
+        }
     }
 }

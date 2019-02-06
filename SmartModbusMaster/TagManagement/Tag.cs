@@ -1,10 +1,4 @@
 ﻿// ********************************************************************
-//
-// Copyright (c) 2015, Kerem Bilgicer
-// All rights reserved.
-//
-// ********************************************************************
-
 namespace Kr.Communication.SmartModbusMaster.TagManagement
 {
     using Converters;
@@ -70,10 +64,12 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement
             {
                 return;
             }
-            BoolTag innertag = new BoolTag(function);
-            innertag.MaskType = masktype;
-            innertag.Mask = mask;
-            innertag.MergeType = mergetype;
+            BoolTag innertag = new BoolTag(function)
+            {
+                MaskType = masktype,
+                Mask = mask,
+                MergeType = mergetype
+            };
             InnerTag = innertag;
             InnerTag.TagValueChangedEvent += delegate (ITagType tag)
             {
@@ -91,9 +87,11 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement
             {
                 return;
             }
-            FloatTag innertag = new FloatTag(function);
-            innertag.Range = range;
-            innertag.FloatConverter = converter;
+            FloatTag innertag = new FloatTag(function)
+            {
+                Range = range,
+                FloatConverter = converter
+            };
             InnerTag = innertag;
             InnerTag.TagValueChangedEvent += delegate (ITagType tag)
             {
@@ -113,11 +111,13 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement
             {
                 return;
             }
-            UshortTag innertag = new UshortTag(function);
-            innertag.MaskType = masktype;
-            innertag.Mask = mask;
-            innertag.MergeType = mergetype;
-            innertag.Range = range;
+            UshortTag innertag = new UshortTag(function)
+            {
+                MaskType = masktype,
+                Mask = mask,
+                MergeType = mergetype,
+                Range = range
+            };
             InnerTag = innertag;
             InnerTag.TagValueChangedEvent += delegate (ITagType tag)
             {
