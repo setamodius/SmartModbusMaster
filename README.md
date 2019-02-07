@@ -37,7 +37,7 @@ class Program
 ## CSV File
 The CSV file consists of two parts. The first section contains device information. The second section contains address information.
 
-**Device section
+**Device section:**
 
 | Type    | Device  | Ip         | Port | Device ID | Refresh Rate | IsActive |
 | ------- | ------- | ---------- | ---- | --------- | ------------ | -------- |
@@ -54,12 +54,13 @@ The CSV file consists of two parts. The first section contains device informatio
 | Refresh Rate | Refresh rate in milliseconds |
 | IsActive | 1: Active, 0: deactive |
 
-**Tag section
+**Tag section:**
 
 | Type | Tag      | Device  | Address | Modbus Type | Direction | Type | MaskType | Mask | Merge Type | Range |
 | ---- | -------- | ------- | ------- | ----------- | --------- | ---- | -------- | ---- | ---------- | ----- |
 | tag  | TagName1 | Device1 | 1       | cs          | read      | bool | none     | 0    | ormerge    | 0     |
 | tag  | TagName2 | Device1 | 2       | cs          | read      | bool | none     | 0    | ormerge    | 0     |
+| tag  | TagName3 | Device2 | 2       | cs          | read      | bool | none     | 0    | ormerge    | 0     |
 
 | Column Name | Description |
 | --- | --- |
@@ -72,10 +73,15 @@ The CSV file consists of two parts. The first section contains device informatio
 | Mask | ushort mask value |
 | Merge Type | ormerge, andmerge |
 | Range | ushort range value |
+
+_Sample CSV file:_
+
 ```
 //device,Device,Ip,Port,DeviceId,RefreshRate,IsActive
 device,Device1,10.3.4.247,502,1,1000,1
+device,Device2,10.3.4.248,502,2,1000,1
 //tag,Tag,Device,Address,ModbusType(cs/is/hr/ir),Direction(read/write),Type(bool/ushort/lsrf/msrf),MaskType(none/andmask/ormask),Mask,MergeType(andmerge/ormerge),Range
 tag,TagName1,Device1,1,cs,read,bool,none,0,ormerge,0
 tag,TagName2,Device1,1,cs,read,bool,none,0,ormerge,0
+tag,TagName3,Device2,1,cs,read,bool,none,0,ormerge,0
 ```
