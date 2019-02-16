@@ -1,5 +1,6 @@
 ﻿namespace Kr.Communication.SmartModbusMaster.Modbus
 {
+    using Kr.Communication.SmartModbusMaster.Diagnostic;
     using System;
     using System.Collections.Generic;
     using TagManagement;
@@ -8,15 +9,16 @@
 
     public class Device : IDisposable
     {
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        ICoreLogger logger;
         private bool isdeviceConnected = false;
         private ModbusMaster myModbusMaster;
         private readonly Queue<Tag> writequeue = new Queue<Tag>();
         public event EventHandler ConnectionStatusChanged;
 
-        public Device(string name, string ip, int port, byte deviceid, int refreshrate, bool isactive)
+        public Device(string name, string ip, int port, byte deviceid, int refreshrate, bool isactive, ICoreLogger coreLogger)
         {
-            logger.Trace("{0}({1}) device is creating.", name, ip);
+            logger = coreLogger ?? throw new ArgumentNullException(nameof(coreLogger));
+            logger.Info($"{name}({ip}) device is creating.");
             Name = name;
             Ip = ip;
             Port = port;
@@ -24,13 +26,13 @@
             RefreshRate = refreshrate;
             IsActive = isactive;
             Collection = new TagCollection();
-            myModbusMaster = new ModbusMaster(this);
+            myModbusMaster = new ModbusMaster(this,logger);
             myModbusMaster.ConnectionStateChanged += MyModbusMaster_ConnectionStateChanged;
         }
 
         ~Device()
         {
-            logger.Trace("{0}({1}) device is disposing.", Name, Ip);
+            logger.Info($"{Name}({Ip}) device is disposing.");
         }
 
         public TagCollection Collection { get; private set; }
@@ -56,7 +58,7 @@
 
         public void Start()
         {
-            logger.Trace("{0}({1}) device is starting.", Name, Ip);
+            logger.Info($"{Name}({Ip}) device is starting.");
             foreach (var item in Collection.GetAllTags())
             {
                 item.Quality = false;
@@ -70,17 +72,17 @@
 
             if (currentTag == null)
             {
-                logger.Error("{0}({1}) device write error. Tag not found : {2} ", Name, Ip, tagname);
+                logger.Warning(null, $"{Name}({Ip}) device write error. Tag not found : {tagname}");
                 return;
             }
-            logger.Trace("{0}({1}) device write.  Tag name : {2} Tag Value : {3}", Name, Ip, currentTag?.Name, value);
+            logger.Trace($"{Name}({Ip}) device write.  Tag name : {currentTag?.Name} Tag Value : {value}");
             if (isdeviceConnected)
             {
                 WriteTagHelper(currentTag, value);
             }
             else
             {
-                logger.Warn("{0}({1}) device not connected. Tag not written : {2} ", Name, Ip, tagname);
+                logger.Warning(null, $"{Name}({Ip}) device not connected. Tag not written : {tagname} ");
             }
         }
 
@@ -99,27 +101,31 @@
         {
             if (value == null)
             {
-                logger.Error("Value is NULL for {0}({1}) tag : {2}", Name, Ip, tag?.Name);
+                logger.Warning(null, $"Value is NULL for {Name}({Ip}) tag : {tag?.Name}");
                 return;
             }
+
             if (tag.InnerTag == null)
             {
-                logger.Error("InnerTag is NULL for {0}({1}) tag : {2}", Name, Ip, tag.Name);
+                logger.Warning(null, $"InnerTag is NULL for {Name}({Ip}) tag : {tag.Name}");
                 return;
             }
-            logger.Trace("{0}({1}) device - InnerTag={2}, value={3}", Name, Ip, tag.InnerTag.GetType().ToString(), value.GetType().ToString());
+
+            logger.Trace($"{Name}({Ip}) device - InnerTag={tag.InnerTag.GetType().ToString()}, value={value.GetType().ToString()}");
             if (tag.InnerTag is BoolTag && value is bool)
             {
                 var currentBoolTag = (BoolTag)tag.InnerTag;
                 currentBoolTag.Value = (bool)value;
                 myModbusMaster?.WriteBoolTagValue(currentBoolTag);
             }
+
             if (tag.InnerTag is UshortTag && value is ushort)
             {
                 var currentUshortTag = (UshortTag)tag.InnerTag;
                 currentUshortTag.Value = (ushort)value;
                 myModbusMaster?.WriteUshortTagValue(currentUshortTag);
             }
+
             if (tag.InnerTag is FloatTag && value is float)
             {
                 var currentFloatTag = (FloatTag)tag.InnerTag;

@@ -7,22 +7,26 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using Kr.Communication.SmartModbusMaster.Diagnostic;
+
     public static class Creator
     {
         public static readonly char _Seperator_ = ',';
         public static int _DefaultPort_ = 502;
         public static int _RefreshRate_ = 2000;
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        //private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         private static readonly LSRFFloatConverter LSRF = new LSRFFloatConverter();
         private static readonly MSRFFloatConverter MSRF = new MSRFFloatConverter();
         private static ModbusDevices myDevices;
+        private static ICoreLogger logger;
 
         public static ModbusDevices FromFile(string filename)
         {
-            logger.Debug("Devices are creating for {0} file", filename);
-            myDevices = new ModbusDevices();            
+            logger = new CoreLogger();
+            logger?.Info($"Devices are creating for {filename} file");
+            myDevices = new ModbusDevices(logger);
             return myDevices = ParseFile(filename) ? myDevices : ModbusDevices.Empty;
-        }
+        }        
 
         public static ushort[] ParseAddressString(string addressstring)
         {
@@ -109,7 +113,7 @@
         {
             if (!File.Exists(filename))
             {
-                logger.Error("File not found - {0}", filename);
+                logger.Fatal(null, $"File not found - {filename}");
                 return false;
             }
 
@@ -121,7 +125,7 @@
             }
             catch (IOException ex)
             {
-                logger.Error(ex);
+                logger.Fatal(ex,"IO Exception");
                 return false;
             }
 
@@ -155,7 +159,8 @@
                         port,
                         deviceid,
                         refreshrate,
-                        isactive
+                        isactive,
+                        logger
                     );
                     myDevices.Add(aDevice.Name, aDevice);
                 }

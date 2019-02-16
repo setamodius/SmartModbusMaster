@@ -1,6 +1,7 @@
 ﻿namespace Kr.Communication.SmartModbusMaster.Modbus
 {
     using global::Modbus.Device;
+    using Kr.Communication.SmartModbusMaster.Diagnostic;
     using System;
     using System.Net.Sockets;
     using System.Runtime.InteropServices;
@@ -9,7 +10,7 @@
 
     internal class ModbusMaster : IDisposable
     {
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        //private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         private DateTime dtDisconnect = new DateTime();
         private DateTime dtNow = new DateTime();
         private bool isreading = false;
@@ -20,18 +21,21 @@
         private bool networkIsOk = false;
         private bool oldNetworkIsOk = false;
         private TcpClient tcpClient;
+        private ICoreLogger logger;
 
-        public ModbusMaster(Device device)
+        public ModbusMaster(Device device, ICoreLogger coreLogger)
         {
+            logger = coreLogger ?? throw new ArgumentNullException(nameof(coreLogger));
+
             if (device == null)
             {
-                logger.Error("device is NULL");
+                logger.Fatal(null, "Device is NULL");
                 return;
             }
             myDevice = device;
             IpAddress = myDevice.Ip;
             ModbusPort = myDevice.Port;
-            logger.Debug("ModbusMaster is creating - {0}", device.Name);
+            logger.Info($"ModbusMaster is creating - {device.Name}");
             myTimer.Interval = myDevice.RefreshRate;
             myTimer.Elapsed += MyTimer_Tick;
         }
@@ -60,7 +64,7 @@
 
         public void Dispose()
         {
-            logger.Debug("ModbusMaster is disposing - {0}", myDevice?.Name);
+            logger.Info($"ModbusMaster is disposing - {myDevice?.Name}");
             if (myTimer != null)
             {
                 myTimer.Stop();
@@ -78,7 +82,7 @@
 
         public void Start()
         {
-            logger.Debug("ModbusMaster is starting - {0}", myDevice?.Name);
+            logger.Info($"ModbusMaster is starting - {myDevice?.Name}");
             myTimer.Start();
         }
 
@@ -142,20 +146,20 @@
                     if (!asyncResult.IsCompleted)
                     {
                         tcpClient.Close();
-                        logger.Warn("Not connecting to server - {0}", IpAddress);
+                        logger.Warning(null, $"Not connecting to server - {IpAddress}");
                         return false;
                     }
                     // create Modbus TCP Master by the tcpclient
                     master = ModbusIpMaster.CreateIp(tcpClient);
                     master.Transport.Retries = 0; //don't have to do retries
                     //master.Transport.ReadTimeout = 1500;
-                    logger.Debug("Connected to server - {0}", IpAddress);
+                    logger.Info($"Connected to server - {IpAddress}" );
                     isreading = false;
                     return tcpClient.Connected;
                 }
                 catch (Exception ex)
                 {
-                    logger.Warn(ex);
+                    logger.Warning(ex,"Connection error");
                     return false;
                 }
             }
@@ -164,7 +168,6 @@
 
         private void MyTimer_Tick(object sender, EventArgs e)
         {
-            //WriteToConsole(this.GetHashCode().ToString());
             try
             {
                 if (oldNetworkIsOk != networkIsOk)
@@ -182,17 +185,17 @@
                     dtNow = DateTime.Now;
                     if ((dtNow - dtDisconnect) > TimeSpan.FromSeconds(10))
                     {
-                        logger.Debug("Trying to connect - {0}", IpAddress);
+                        logger.Trace($"Trying to connect - {IpAddress}");
                         networkIsOk = Connect();
                         if (!networkIsOk)
                         {
-                            logger.Warn("Not connected - {0}", IpAddress);
+                            logger.Warning(null, "Not connected - {IpAddress}");
                             dtDisconnect = DateTime.Now;
                         }
                     }
                     else
                     {
-                        logger.Trace("Waiting for reconnect - {0}", IpAddress);
+                        logger.Trace($"Waiting for reconnect - {IpAddress}");
                     }
                 }
             }
@@ -203,7 +206,7 @@
                     networkIsOk = false;
                     dtDisconnect = DateTime.Now;
                 }
-                logger.Warn(ex);
+                logger.Warning(ex, "Read error");
             }
         }
 
@@ -253,8 +256,7 @@
                 }
             }
             isreading = false;
-            myWatch.Stop();
-            //WriteToConsole(myWatch.ElapsedMilliseconds.ToString() + " ms");
+            myWatch.Stop();            
         }
     }
 }

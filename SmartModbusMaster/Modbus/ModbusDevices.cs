@@ -1,13 +1,20 @@
 ﻿namespace Kr.Communication.SmartModbusMaster.Modbus
 {
+    using Kr.Communication.SmartModbusMaster.Diagnostic;
     using System;
     using System.Collections.Generic;
     using TagManagement;
 
     public class ModbusDevices : Dictionary<string, Device>
     {
-        public static ModbusDevices Empty = new ModbusDevices();
-        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        public static ModbusDevices Empty = null;
+        //private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly ICoreLogger logger;
+
+        public ModbusDevices(ICoreLogger coreLogger)
+        {
+            logger = coreLogger ?? throw new ArgumentNullException(nameof(coreLogger));
+        }
 
         ~ModbusDevices()
         {
@@ -49,7 +56,7 @@
         {
             if (ContainsKey(devicename))
             {
-                logger.Warn("Device already added - {0}", devicename);
+                logger.Warning(null, $"Device already added - {devicename}");
                 return;
             }
             base.Add(devicename, device);

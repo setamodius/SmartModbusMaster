@@ -1,6 +1,6 @@
 //device,Device,Ip,Port,DeviceId,RefreshRate,IsActive
 device,Device1,10.3.4.247,502,1,1000,1
-//tag,Tag,Device,Address,ModbusType(cs/is/hr/ir),Direction(read/write),Type(bool/ushort/lsfr/msrf),MaskType(none/andmask/ormask),Mask,MergeType(andmerge/ormerge),Range
+//tag,Tag,Device,Address,ModbusType(cs/is/hr/ir),Direction(read/write),Type(bool/ushort/lsrf/msrf),MaskType(none/andmask/ormask),Mask,MergeType(andmerge/ormerge),Range
 tag,Tag1a,Device1,1,cs,read,bool,none,0,ormerge,0
 tag,Tag1b,Device1,2,cs,read,bool,none,0,ormerge,0
 tag,Tag1c,Device1,3,cs,read,bool,none,0,ormerge,0
