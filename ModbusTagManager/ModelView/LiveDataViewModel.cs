@@ -1,4 +1,5 @@
-﻿using Kr.Communication.SmartModbusMaster.Modbus;
+﻿using Kr.Communication.SmartModbusMaster.Diagnostic;
+using Kr.Communication.SmartModbusMaster.Modbus;
 using ModbusTagManager.Models;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,12 @@ namespace ModbusTagManager.ModelView
             StartCommand = new RelayCommand(StartDevices, CheckStatus);
             WriteCommand = new RelayCommand(WriteTag, CanWrite);
             CurrentTags = new ObservableCollection<TagResult>();
+            GlobalLogger.LogMessageReceived += GlobalLogger_LogMessageReceived;
+        }
+
+        private void GlobalLogger_LogMessageReceived(object sender, LogReceivedEventArgs e)
+        {
+            Console.WriteLine(e.Message);
         }
 
         public ObservableCollection<TagResult> CurrentTags

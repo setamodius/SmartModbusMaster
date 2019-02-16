@@ -189,7 +189,7 @@
                         networkIsOk = Connect();
                         if (!networkIsOk)
                         {
-                            logger.Warning(null, "Not connected - {IpAddress}");
+                            logger.Warning(null, $"Not connected - {IpAddress}");
                             dtDisconnect = DateTime.Now;
                         }
                     }
