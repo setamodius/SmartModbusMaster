@@ -10,25 +10,21 @@ class Program
     static void Main(string[] args)
     {           
         myDevices = Creator.FromFile("addresses.csv");
-        foreach (var device in myDevices.Values)
+		if (myDevices == null)
         {
-            var readTags = from item in device.Collection.GetAllTags() where item.TagDirection ==
-                Kr.Communication.SmartModbusMaster.TagManagement.Types.Direction.Read select item;
-            foreach (var tag in device.Collection.GetAllTags())
-            {
-                tag.TagStatusChanged += Tag_TagStatusChanged;
-            }
+            return;
         }
+        myDevices.TagStatusChanged += MyDevices_TagStatusChanged;      
         myDevices.StartDevices();
 
         Console.ReadLine();
     }
     
-    private static void Tag_TagStatusChanged(Tag sender, object value, bool quality)
+    private static void MyDevices_TagStatusChanged(object sender, TagChangedEventArgs e)
     {
-        if (quality)
+        if (e.quality)
         {
-             Console.WriteLine(sender.Name + ": " + sender.Value);
+             Console.WriteLine(e.Name + ": " + e.Value);
         }
     }
 }
