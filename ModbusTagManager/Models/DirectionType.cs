@@ -2,10 +2,10 @@
 {
     public class DirectionType
     {
-        public static DirectionType Read = new DirectionType("Read", "read");
-        public static DirectionType Write = new DirectionType("Write", "write");
+        public static readonly DirectionType Read = new DirectionType("Read", "read");
+        public static readonly DirectionType Write = new DirectionType("Write", "write");
 
-        public static DirectionType[] Types = new DirectionType[]
+        public static readonly DirectionType[] Types = new DirectionType[]
         {
             Read,Write
         };        

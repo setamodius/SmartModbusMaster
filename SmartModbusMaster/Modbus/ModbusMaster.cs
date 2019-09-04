@@ -18,7 +18,7 @@
         private readonly Timer myTimer = new Timer();
 
         private bool networkIsOk = false;
-        private bool oldNetworkIsOk = false;
+        private bool? oldNetworkIsOk;
         private TcpClient tcpClient;
         private readonly ICoreLogger logger;
 
@@ -81,7 +81,7 @@
 
         public void Start()
         {
-            logger.Info($"ModbusMaster is starting - {myDevice?.Name}");
+            logger.Info($"ModbusMaster is starting - {myDevice?.Name}");            
             myTimer.Start();
         }
 
@@ -168,13 +168,7 @@
         private void MyTimer_Tick(object sender, EventArgs e)
         {
             try
-            {
-                if (oldNetworkIsOk != networkIsOk)
-                {
-                    oldNetworkIsOk = networkIsOk;
-                    ConnectionStateChanged?.Invoke(this, networkIsOk);
-                }
-
+            {                
                 if (networkIsOk && !isreading)
                 {
                     ReadValues();
@@ -196,6 +190,11 @@
                     {
                         logger.Trace($"Waiting for reconnect - {IpAddress}");
                     }
+                }
+                if (oldNetworkIsOk != networkIsOk)
+                {
+                    oldNetworkIsOk = networkIsOk;
+                    ConnectionStateChanged?.Invoke(this, networkIsOk);
                 }
             }
             catch (Exception ex)

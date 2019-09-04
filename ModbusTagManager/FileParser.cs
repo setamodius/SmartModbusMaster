@@ -92,16 +92,16 @@ namespace ModbusTagManager
                     switch (tag.TagValueType.Trim().ToLower())
                     {
                         case ("bool"):
-                            aTag.TagValueType = ModbusTagManager.Models.ValueType.Bool;
+                            aTag.TagValueType = Models.ValueType.Bool;
                             break;
                         case ("ushort"):
-                            aTag.TagValueType = ModbusTagManager.Models.ValueType.Ushort;
+                            aTag.TagValueType = Models.ValueType.Ushort;
                             break;
                         case ("lsfr"):
-                            aTag.TagValueType = ModbusTagManager.Models.ValueType.FloatLSRF;
+                            aTag.TagValueType = Models.ValueType.FloatLSRF;
                             break;
                         case ("msrf"):
-                            aTag.TagValueType = ModbusTagManager.Models.ValueType.FloatMSRF;
+                            aTag.TagValueType = Models.ValueType.FloatMSRF;
                             break;
 
                         default:
@@ -112,27 +112,25 @@ namespace ModbusTagManager
                     switch (tag.Direction.Trim().ToLower())
                     {
                         case ("read"):
-                            aTag.TagDirectionType = Models.DirectionType.Read;
+                            aTag.TagDirectionType = DirectionType.Read;
                             break;
                         case ("write"):
-                            aTag.TagDirectionType = Models.DirectionType.Write;
-                            break;
-                        default:
-                            break;
+                            aTag.TagDirectionType = DirectionType.Write;
+                            break;                        
                     }
                     #endregion
                     #region TagMaskType
                     switch (tag.TagMaskType.Trim().ToLower())
                     {//none/andmask/ormask
                         case ("andmask"):
-                            aTag.TagMaskType = Models.MaskType.AndMask;
+                            aTag.TagMaskType = MaskType.AndMask;
                             break;
                         case ("ormask"):
-                            aTag.TagMaskType = Models.MaskType.OrMask;
+                            aTag.TagMaskType = MaskType.OrMask;
                             break;
 
                         default:
-                            aTag.TagMaskType = Models.MaskType.None;
+                            aTag.TagMaskType = MaskType.None;
                             break;
                     }
                     #endregion                    
@@ -141,11 +139,11 @@ namespace ModbusTagManager
                     switch (tag.TagMergeType.Trim().ToLower())
                     {//andmerge/ormerge
                         case ("andmerge"):
-                            aTag.TagMergeType = Models.MergeType.AndMerge;
+                            aTag.TagMergeType = MergeType.AndMerge;
                             break;
 
                         default:
-                            aTag.TagMergeType = Models.MergeType.OrMerge;
+                            aTag.TagMergeType = MergeType.OrMerge;
                             break;
                     }
                     #endregion                    
@@ -227,7 +225,7 @@ namespace ModbusTagManager
                 }
             }
             
-            File.WriteAllText(filename,fileDeviceString.ToString()+fileTagString.ToString());
+            File.WriteAllText(filename,fileDeviceString.Append(fileTagString).ToString());
         }
     }
 }

@@ -36,7 +36,7 @@ namespace ModbusTagManager.ModelView
             GlobalLogger.LogMessageReceived += GlobalLogger_LogMessageReceived;
         }
 
-        private void GlobalLogger_LogMessageReceived(object sender, LogReceivedEventArgs e)
+        private static void GlobalLogger_LogMessageReceived(object sender, LogReceivedEventArgs e)
         {
             Console.WriteLine(e.Message);
         }
@@ -114,7 +114,6 @@ namespace ModbusTagManager.ModelView
             tagDictionary.Clear();
             foreach (var device in myDevices.Values)
             {
-                var readTags = from item in device.Collection.GetAllTags() where item.TagDirection == Kr.Communication.SmartModbusMaster.TagManagement.Types.Direction.Read select item;
                 foreach (var tag in device.Collection.GetAllTags())
                 {
                     if (tagDictionary.ContainsKey(tag.Name))
