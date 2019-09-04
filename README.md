@@ -10,7 +10,7 @@ class Program
     static void Main(string[] args)
     {           
         myDevices = Creator.FromFile("addresses.csv");
-		if (myDevices == null)
+	if (myDevices == null)
         {
             return;
         }
