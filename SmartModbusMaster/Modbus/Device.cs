@@ -9,10 +9,9 @@
 
     public class Device : IDisposable
     {
-        ICoreLogger logger;
+        readonly ICoreLogger logger;
         private bool isdeviceConnected = false;
-        private ModbusMaster myModbusMaster;
-        private readonly Queue<Tag> writequeue = new Queue<Tag>();
+        private readonly ModbusMaster myModbusMaster;        
         public event EventHandler ConnectionStatusChanged;
 
         public Device(string name, string ip, int port, byte deviceid, int refreshrate, bool isactive, ICoreLogger coreLogger)

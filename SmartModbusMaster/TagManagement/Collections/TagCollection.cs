@@ -1,16 +1,17 @@
 ﻿namespace Kr.Communication.SmartModbusMaster.TagManagement.Collections
 {
     using Modbus;
+    using System;
     using System.Collections.Generic;
     using Types;
 
     public class TagCollection
     {
-        private Dictionary<string, BoolTag> allBoolTags = new Dictionary<string, BoolTag>();
-        private Dictionary<string, FloatTag> allFloatTags = new Dictionary<string, FloatTag>();
-        private Dictionary<string, Tag> allTags = new Dictionary<string, Tag>();
-        private Dictionary<string, UshortTag> allUshortTags = new Dictionary<string, UshortTag>();
-        private Dictionary<string, Tag> allWriteTags = new Dictionary<string, Tag>();
+        private readonly Dictionary<string, BoolTag> allBoolTags = new Dictionary<string, BoolTag>();
+        private readonly Dictionary<string, FloatTag> allFloatTags = new Dictionary<string, FloatTag>();
+        private readonly Dictionary<string, Tag> allTags = new Dictionary<string, Tag>();
+        private readonly Dictionary<string, UshortTag> allUshortTags = new Dictionary<string, UshortTag>();
+        private readonly Dictionary<string, Tag> allWriteTags = new Dictionary<string, Tag>();
 
         public TagCollection()
         {
@@ -20,7 +21,7 @@
             InputRegisters = new InputRegisterCollection(125);
         }
 
-        public event TagStatusChangeEventHandler TagStatusChanged;
+        public event EventHandler TagStatusChanged;
 
         public CoilStatusCollection CoilStatuses { get; private set; }
 
@@ -154,10 +155,10 @@
                 }
             }
 
-            addingTag.TagStatusChanged += delegate (Tag sender, object value, bool quality)
+            addingTag.TagStatusChanged += (sender, e) =>
             {
-                TagStatusChanged?.Invoke(sender, value, quality);
+                TagStatusChanged?.Invoke(sender, EventArgs.Empty);
             };
-        }
+        }       
     }
 }

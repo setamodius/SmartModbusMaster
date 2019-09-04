@@ -192,27 +192,29 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Types.Tests
 
         public Dictionary<ushort, bool> GetModbusBoolValues()
         {
-            Dictionary<ushort, bool> results = new Dictionary<ushort, bool>();
-            results.Add(1, true);
-            results.Add(2, true);
-            results.Add(3, true);
-            results.Add(4, true);
-            results.Add(5, false);
-            results.Add(6, true);
-            results.Add(7, true);
-            results.Add(8, false);
-            results.Add(9, false);
-            results.Add(10, true);
-            results.Add(11, false);
-            results.Add(12, false);
-            results.Add(13, true);
-            results.Add(14, false);
-            results.Add(15, true);
-            results.Add(16, false);
-            results.Add(17, true);
-            results.Add(18, false);
-            results.Add(19, true);
-            results.Add(20, true);
+            Dictionary<ushort, bool> results = new Dictionary<ushort, bool>
+            {
+                { 1, true },
+                { 2, true },
+                { 3, true },
+                { 4, true },
+                { 5, false },
+                { 6, true },
+                { 7, true },
+                { 8, false },
+                { 9, false },
+                { 10, true },
+                { 11, false },
+                { 12, false },
+                { 13, true },
+                { 14, false },
+                { 15, true },
+                { 16, false },
+                { 17, true },
+                { 18, false },
+                { 19, true },
+                { 20, true }
+            };
 
             return results;
         }

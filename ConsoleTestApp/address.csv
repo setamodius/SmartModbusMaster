@@ -1,0 +1,6 @@
+﻿//device,Device,Ip,Port,DeviceId,RefreshRate,IsActive
+device,Device1,10.3.4.247,502,1,1000,1
+//tag,Tag,Device,Address,ModbusType(cs/is/hr/ir),Direction(read/write),Type(bool/ushort/lsrf/msrf),MaskType(none/andmask/ormask),Mask,MergeType(andmerge/ormerge),Range
+tag,MATP/LVMV/EnergyTable/EnergyTable1/Voltage1/Offline,Device1,1,hr,read,ushort,none,0,ormerge,0
+tag,MATP/LVMV/EnergyTable/EnergyTable1/Voltage2/Offline,Device1,2,hr,read,ushort,none,0,ormerge,0
+tag,MATP/LVMV/EnergyTable/EnergyTable1/Voltage3/Offline,Device2,3,hr,read,ushort,none,0,ormerge,0

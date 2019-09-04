@@ -8,7 +8,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Tests
     [TestClass()]
     public class TagCollectionTests
     {
-        private Dictionary<string, Tag> testTags = new Dictionary<string, Tag>();
+        private readonly Dictionary<string, Tag> testTags = new Dictionary<string, Tag>();
 
         [TestMethod()]
         public void AddingTagTest()
@@ -101,7 +101,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Tests
             int floatinputcount = 0;
             for (int i = 0; i < totalcount; i++)
             {
-                string name = "";
+                string name;
                 Tag newTag;
                 if (i < (totalcount / 6))
                 {

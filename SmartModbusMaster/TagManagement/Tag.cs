@@ -1,24 +1,20 @@
-﻿// ********************************************************************
-namespace Kr.Communication.SmartModbusMaster.TagManagement
+﻿namespace Kr.Communication.SmartModbusMaster.TagManagement
 {
+    using System;
     using Converters;
     using Modbus;
-    using Types;
-
-    public delegate void TagStatusChangeEventHandler(Tag sender, object value, bool quality);
+    using Types;   
 
     public class Tag
     {
-        private bool _quality = false;
-
-        private object _value;
+        private bool _quality = false;        
 
         public Tag(string tagname)
         {
             Name = tagname;
         }
 
-        public event TagStatusChangeEventHandler TagStatusChanged;
+        public event EventHandler TagStatusChanged; 
 
         public ITagType InnerTag { get; private set; }
         public string Name { get; private set; }
@@ -27,9 +23,13 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement
         {
             get { return _quality; }
             set
-            {
-                _quality = value;
-                TagStatusChanged?.Invoke(this, _value, value);
+            {               
+                _quality = value;                
+                if (InnerTag != null && !InnerTag.IsDefault)
+                {
+                    TagStatusChanged?.Invoke(this, EventArgs.Empty);
+                }
+                                            
             }
         }
 
@@ -73,8 +73,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement
             InnerTag = innertag;
             InnerTag.TagValueChangedEvent += delegate (ITagType tag)
             {
-                _value = innertag.Value;
-                TagStatusChanged?.Invoke(this, _value, Quality);
+                TagStatusChanged?.Invoke(this, EventArgs.Empty);
             };
         }
 
@@ -95,8 +94,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement
             InnerTag = innertag;
             InnerTag.TagValueChangedEvent += delegate (ITagType tag)
             {
-                _value = innertag.Value;
-                TagStatusChanged?.Invoke(this, _value, Quality);
+                TagStatusChanged?.Invoke(this, EventArgs.Empty);                
             };
         }
 
@@ -121,8 +119,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement
             InnerTag = innertag;
             InnerTag.TagValueChangedEvent += delegate (ITagType tag)
             {
-                _value = innertag.Value;
-                TagStatusChanged?.Invoke(this, _value, Quality);
+                TagStatusChanged?.Invoke(this, EventArgs.Empty);
             };
         }
     }

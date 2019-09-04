@@ -7,7 +7,7 @@
 
     public abstract class FunctionsCollection : Dictionary<string, ITagType>
     {
-        private HashSet<ushort> addresses = new HashSet<ushort>();
+        private readonly HashSet<ushort> addresses = new HashSet<ushort>();
         public ReadMap[] Maps { get; private set; }
         public ushort ParseSize { get; set; }
 

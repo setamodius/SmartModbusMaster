@@ -6,7 +6,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Collections.Tests
     [TestClass()]
     public class FunctionCollectionTests
     {
-        private TagCollection myCollection = new TagCollection();
+        private readonly TagCollection myCollection = new TagCollection();
 
         [TestMethod()]
         public void CoilStatusAddressParseTest()
@@ -75,7 +75,7 @@ namespace Kr.Communication.SmartModbusMaster.TagManagement.Collections.Tests
             int floatinputcount = 0;
             for (int i = 0; i < totalcount; i++)
             {
-                string name = "";
+                string name;
                 Tag newTag;
                 if (i < (totalcount / 6))
                 {

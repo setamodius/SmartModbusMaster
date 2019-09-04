@@ -69,6 +69,7 @@
     <Compile Include="Modbus\ReadMap.cs" />
     <Compile Include="Modbus\RegisterFunction.cs" />
     <Compile Include="Modbus\StatusFunction.cs" />
+    <Compile Include="Modbus\TagChangedEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TagManagement\Collections\CoilStatusCollection.cs" />
     <Compile Include="TagManagement\Collections\FunctionsCollection.cs" />

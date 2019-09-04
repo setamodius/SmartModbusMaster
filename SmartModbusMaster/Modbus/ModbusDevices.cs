@@ -21,7 +21,7 @@
             KillAllDevices();
         }
 
-        public event TagStatusChangeEventHandler TagStatusChanged;
+        public event EventHandler<TagChangedEventArgs> TagStatusChanged;
         public event EventHandler<DeviceStatusChangedEventArgs> DeviceStatusChanged;
 
         public void KillAllDevices()
@@ -61,9 +61,12 @@
             }
             base.Add(devicename, device);
             device.ConnectionStatusChanged += Device_ConnectionStatusChanged;
-            device.Collection.TagStatusChanged += delegate (Tag sender, object value, bool quality)
+            device.Collection.TagStatusChanged += (sender, e)=>
             {
-                TagStatusChanged?.Invoke(sender, value, quality);
+                if (sender is Tag tag)
+                {
+                    TagStatusChanged?.Invoke(this, new TagChangedEventArgs { Name = tag.Name, Value = tag.Value, Quality = tag.Quality });
+                }                
             };
         }
 

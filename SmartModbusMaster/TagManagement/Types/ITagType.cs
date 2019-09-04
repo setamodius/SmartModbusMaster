@@ -13,5 +13,7 @@
         void AddAddress(ushort address);
 
         ushort[] GetAddresses();
+
+        bool IsDefault { get; }
     }
 }

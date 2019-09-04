@@ -1,5 +1,6 @@
 ﻿using Kr.Communication.SmartModbusMaster.Diagnostic;
 using Kr.Communication.SmartModbusMaster.Modbus;
+using Kr.Communication.SmartModbusMaster.TagManagement;
 using ModbusTagManager.Models;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace ModbusTagManager.ModelView
         private int _deviceCount;
         private LiveDataViewModelStatuses _status;
         private ModbusDevices myDevices;
-        private Dictionary<string, TagResult> tagDictionary = new Dictionary<string, TagResult>();
+        private readonly Dictionary<string, TagResult> tagDictionary = new Dictionary<string, TagResult>();
         public LiveDataViewModel()
         {
             Status = LiveDataViewModelStatuses.Idle;
@@ -76,17 +77,15 @@ namespace ModbusTagManager.ModelView
             }
             if (tag.TagType == typeof(bool))
             {
-                return bool.TryParse(tag.WriteValue, out bool boolresult);
+                return bool.TryParse(tag.WriteValue, out _);
             }
             if (tag.TagType == typeof(float))
             {
-                float floatresult = float.MinValue;
-                return float.TryParse(tag.WriteValue, out floatresult);
+                return float.TryParse(tag.WriteValue, out _);
             }
             if (tag.TagType == typeof(ushort))
             {
-                ushort ushortresult = ushort.MinValue;
-                return ushort.TryParse(tag.WriteValue, out ushortresult);
+                return ushort.TryParse(tag.WriteValue, out _);
             }
             return false;
         }
@@ -130,7 +129,7 @@ namespace ModbusTagManager.ModelView
             }
             DeviceCount = myDevices.Count;
             Status = LiveDataViewModelStatuses.Ready;
-        }
+        }        
 
         private void OpenFile(object obj)
         {
@@ -162,12 +161,19 @@ namespace ModbusTagManager.ModelView
             Status = LiveDataViewModelStatuses.Running;
         }
 
-        private void Tag_TagStatusChanged(Kr.Communication.SmartModbusMaster.TagManagement.Tag sender, object value, bool quality)
+        private void Tag_TagStatusChanged(object sender, EventArgs e)
         {
-            if (tagDictionary.ContainsKey(sender.Name))
+            if (sender is Tag tag)
             {
-                tagDictionary[sender.Name].SetTag(sender);
-            }
+                if (tag.Quality)
+                {
+
+                }
+                if (tagDictionary.ContainsKey(tag.Name))
+                {
+                    tagDictionary[tag.Name].SetTag(tag);
+                }
+            }           
         }
 
         private void WriteTag(object obj)

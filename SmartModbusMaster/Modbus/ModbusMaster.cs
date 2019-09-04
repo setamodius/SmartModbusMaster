@@ -10,18 +10,17 @@
 
     internal class ModbusMaster : IDisposable
     {
-        //private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         private DateTime dtDisconnect = new DateTime();
         private DateTime dtNow = new DateTime();
         private bool isreading = false;
         private ModbusIpMaster master;
-        private Device myDevice;
-        private Timer myTimer = new Timer();
+        private readonly Device myDevice;
+        private readonly Timer myTimer = new Timer();
 
         private bool networkIsOk = false;
         private bool oldNetworkIsOk = false;
         private TcpClient tcpClient;
-        private ICoreLogger logger;
+        private readonly ICoreLogger logger;
 
         public ModbusMaster(Device device, ICoreLogger coreLogger)
         {

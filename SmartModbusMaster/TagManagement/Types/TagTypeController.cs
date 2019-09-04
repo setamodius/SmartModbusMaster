@@ -59,7 +59,7 @@
 
             MergeType = mergetype;
             MaskType = masktype;
-            Mask = default(TType);
+            Mask = default;
         }
 
         public event TagValueChangedEventHandler TagValueChangedEvent;
@@ -78,10 +78,13 @@
 
         public TType Range { get; set; }
 
+        public bool IsDefault { get; private set; } = true;
+
         public TType Value
         {
             get
             {
+                IsDefault = false;
                 CalculateReturnValue();
                 return InnerValue;
             }
@@ -95,7 +98,7 @@
         {
             if (!modbusValueData.ContainsKey(address))
             {
-                modbusValueData.Add(address, default(TModbusType));
+                modbusValueData.Add(address, default);
             }
         }
 

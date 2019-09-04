@@ -8,56 +8,60 @@ namespace SmartModbusMasterTests.TagManagement.Types
     [TestClass]
     public class UshortTagTests
     {
-        public Dictionary<ushort, ushort> getModbusUshortValues()
+        public Dictionary<ushort, ushort> GetModbusUshortValues()
         {
-            Dictionary<ushort, ushort> results = new Dictionary<ushort, ushort>();
-            results.Add(1, 100);
-            results.Add(2, 101);
-            results.Add(3, 102);
-            results.Add(4, 103);
-            results.Add(5, 104);
-            results.Add(6, 12);
-            results.Add(7, 13);
-            results.Add(8, 14);
-            results.Add(9, 15);
-            results.Add(10, 160);
-            results.Add(11, 161);
-            results.Add(12, 162);
-            results.Add(13, 163);
-            results.Add(14, 164);
-            results.Add(15, 165);
-            results.Add(16, 166);
-            results.Add(17, 167);
-            results.Add(18, 168);
-            results.Add(19, 169);
-            results.Add(20, 170);
+            Dictionary<ushort, ushort> results = new Dictionary<ushort, ushort>
+            {
+                { 1, 100 },
+                { 2, 101 },
+                { 3, 102 },
+                { 4, 103 },
+                { 5, 104 },
+                { 6, 12 },
+                { 7, 13 },
+                { 8, 14 },
+                { 9, 15 },
+                { 10, 160 },
+                { 11, 161 },
+                { 12, 162 },
+                { 13, 163 },
+                { 14, 164 },
+                { 15, 165 },
+                { 16, 166 },
+                { 17, 167 },
+                { 18, 168 },
+                { 19, 169 },
+                { 20, 170 }
+            };
 
             return results;
         }
 
-        public Dictionary<ushort, ushort> getModbusUshortValues2()
+        public Dictionary<ushort, ushort> GetModbusUshortValues2()
         {
-            Dictionary<ushort, ushort> results = new Dictionary<ushort, ushort>();
-            results.Add(1, 100);
-            results.Add(2, 101);
-            results.Add(3, 102);
-            results.Add(4, 203);
-            results.Add(5, 204);
-            results.Add(6, 12);
-            results.Add(7, 13);
-            results.Add(8, 14);
-            results.Add(9, 15);
-            results.Add(10, 200);
-            results.Add(11, 161);
-            results.Add(12, 162);
-            results.Add(13, 163);
-            results.Add(14, 164);
-            results.Add(15, 165);
-            results.Add(16, 166);
-            results.Add(17, 167);
-            results.Add(18, 168);
-            results.Add(19, 169);
-            results.Add(20, 170);
+            Dictionary<ushort, ushort> results = new Dictionary<ushort, ushort>
+            {
+                { 1, 100 },
+                { 2, 101 },
+                { 3, 102 },
+                { 4, 203 },
+                { 5, 204 },
+                { 6, 12 },
+                { 7, 13 },
+                { 8, 14 },
+                { 9, 15 },
+                { 10, 200 },
+                { 11, 161 },
+                { 12, 162 },
+                { 13, 163 },
+                { 14, 164 },
+                { 15, 165 },
+                { 16, 166 },
+                { 17, 167 },
+                { 18, 168 },
+                { 19, 169 },
+                { 20, 170 }
+            };
 
             return results;
         }
@@ -68,7 +72,7 @@ namespace SmartModbusMasterTests.TagManagement.Types
             UshortTag myTag = new UshortTag(RegisterFunction.HoldingRegister);
             myTag.AddAddress(5);
             myTag.AddAddress(12);
-            myTag.SetData(getModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues());
         }
 
         [TestMethod()]
@@ -78,7 +82,7 @@ namespace SmartModbusMasterTests.TagManagement.Types
             myTag.AddAddress(3); // 102
             myTag.MaskType = TagAddressMaskType.AndMask;
             myTag.Mask = 15;
-            myTag.SetData(getModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues());
             Assert.AreEqual(6, myTag.Value);
         }
 
@@ -89,7 +93,7 @@ namespace SmartModbusMasterTests.TagManagement.Types
             myTag.AddAddress(3); // 102
             myTag.MaskType = TagAddressMaskType.AndMask;
             myTag.Mask = 8;
-            myTag.SetData(getModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues());
             Assert.AreEqual(0, myTag.Value);
         }
 
@@ -100,7 +104,7 @@ namespace SmartModbusMasterTests.TagManagement.Types
             myTag.AddAddress(5); // 104
             myTag.MaskType = TagAddressMaskType.AndMask;
             myTag.Mask = 15;
-            myTag.SetData(getModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues());
             Assert.AreEqual(8, myTag.Value);
         }
 
@@ -111,7 +115,7 @@ namespace SmartModbusMasterTests.TagManagement.Types
             myTag.AddAddress(5); // 104
             myTag.MaskType = TagAddressMaskType.AndMask;
             myTag.Mask = 8;
-            myTag.SetData(getModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues());
             Assert.AreEqual(8, myTag.Value);
         }
 
@@ -123,7 +127,7 @@ namespace SmartModbusMasterTests.TagManagement.Types
             myTag.AddAddress(4); // 103
             myTag.AddAddress(5); // 104
             myTag.MergeType = TagAddressMergeType.AndMerge;
-            myTag.SetData(getModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues());
             Assert.AreEqual(96, myTag.Value);
         }
 
@@ -134,7 +138,7 @@ namespace SmartModbusMasterTests.TagManagement.Types
             myTag.AddAddress(3); // 102
             myTag.AddAddress(4); // 103
             myTag.MergeType = TagAddressMergeType.AndMerge;
-            myTag.SetData(getModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues());
             Assert.AreEqual(102, myTag.Value);
         }
 
@@ -145,7 +149,7 @@ namespace SmartModbusMasterTests.TagManagement.Types
             myTag.AddAddress(8); // 14
             myTag.AddAddress(9); // 15
             myTag.MergeType = TagAddressMergeType.AndMerge;
-            myTag.SetData(getModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues());
             Assert.AreEqual(14, myTag.Value);
         }
 
@@ -163,7 +167,7 @@ namespace SmartModbusMasterTests.TagManagement.Types
             myTag.AddAddress(3); // 102
             myTag.MaskType = TagAddressMaskType.OrMask;
             myTag.Mask = 15;
-            myTag.SetData(getModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues());
             Assert.AreEqual(111, myTag.Value);
         }
 
@@ -174,7 +178,7 @@ namespace SmartModbusMasterTests.TagManagement.Types
             myTag.AddAddress(3); // 102
             myTag.MaskType = TagAddressMaskType.OrMask;
             myTag.Mask = 8;
-            myTag.SetData(getModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues());
             Assert.AreEqual(110, myTag.Value);
         }
 
@@ -185,7 +189,7 @@ namespace SmartModbusMasterTests.TagManagement.Types
             myTag.AddAddress(5); // 104
             myTag.MaskType = TagAddressMaskType.OrMask;
             myTag.Mask = 15;
-            myTag.SetData(getModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues());
             Assert.AreEqual(111, myTag.Value);
         }
 
@@ -196,7 +200,7 @@ namespace SmartModbusMasterTests.TagManagement.Types
             myTag.AddAddress(5); // 104
             myTag.MaskType = TagAddressMaskType.OrMask;
             myTag.Mask = 8;
-            myTag.SetData(getModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues());
             Assert.AreEqual(104, myTag.Value);
         }
 
@@ -207,7 +211,7 @@ namespace SmartModbusMasterTests.TagManagement.Types
             myTag.AddAddress(5); // 104
             myTag.MaskType = TagAddressMaskType.None;
             myTag.Mask = 1;
-            myTag.SetData(getModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues());
             Assert.AreEqual(104, myTag.Value);
         }
 
@@ -219,7 +223,7 @@ namespace SmartModbusMasterTests.TagManagement.Types
             myTag.AddAddress(4); // 103
             myTag.AddAddress(5); // 104
             myTag.MergeType = TagAddressMergeType.OrMerge;
-            myTag.SetData(getModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues());
             Assert.AreEqual(111, myTag.Value);
         }
 
@@ -230,7 +234,7 @@ namespace SmartModbusMasterTests.TagManagement.Types
             myTag.AddAddress(3); // 102
             myTag.AddAddress(4); // 103
             myTag.MergeType = TagAddressMergeType.OrMerge;
-            myTag.SetData(getModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues());
             Assert.AreEqual(103, myTag.Value);
         }
 
@@ -241,7 +245,7 @@ namespace SmartModbusMasterTests.TagManagement.Types
             myTag.AddAddress(8); // 14
             myTag.AddAddress(9); // 15
             myTag.MergeType = TagAddressMergeType.OrMerge;
-            myTag.SetData(getModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues());
             Assert.AreEqual(15, myTag.Value);
         }
 
@@ -256,7 +260,7 @@ namespace SmartModbusMasterTests.TagManagement.Types
             };
             myTag.AddAddress(5);
             myTag.AddAddress(12);
-            myTag.SetData(getModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues());
             Assert.AreEqual(true, isChanged);
         }
 
@@ -271,8 +275,8 @@ namespace SmartModbusMasterTests.TagManagement.Types
             };
             myTag.AddAddress(10);
             myTag.Range = 30;
-            myTag.SetData(getModbusUshortValues2());
-            myTag.SetData(getModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues2());
+            myTag.SetData(GetModbusUshortValues());
             Assert.AreEqual(2, values.Count);
             Assert.AreEqual(200, values[0]);
             Assert.AreEqual(160, values[1]);
@@ -302,8 +306,8 @@ namespace SmartModbusMasterTests.TagManagement.Types
                 values.Add(myTag.Value);
             };
             myTag.AddAddress(5);
-            myTag.SetData(getModbusUshortValues());
-            myTag.SetData(getModbusUshortValues2());
+            myTag.SetData(GetModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues2());
             Assert.AreEqual(104, values[0]);
             Assert.AreEqual(204, values[1]);
         }
@@ -320,8 +324,8 @@ namespace SmartModbusMasterTests.TagManagement.Types
             myTag.AddAddress(4);
             myTag.MaskType = TagAddressMaskType.AndMask;
             myTag.Mask = 7;
-            myTag.SetData(getModbusUshortValues());
-            myTag.SetData(getModbusUshortValues2());
+            myTag.SetData(GetModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues2());
             Assert.AreEqual(7, values[0]);
             Assert.AreEqual(3, values[1]);
         }
@@ -336,8 +340,8 @@ namespace SmartModbusMasterTests.TagManagement.Types
                 values.Add(myTag.Value);
             };
             myTag.AddAddress(10);
-            myTag.SetData(getModbusUshortValues());
-            myTag.SetData(getModbusUshortValues2());
+            myTag.SetData(GetModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues2());
             Assert.AreEqual(2, values.Count);
             Assert.AreEqual(160, values[0]);
             Assert.AreEqual(200, values[1]);
@@ -354,8 +358,8 @@ namespace SmartModbusMasterTests.TagManagement.Types
             };
             myTag.AddAddress(10);
             myTag.Range = 50;
-            myTag.SetData(getModbusUshortValues());
-            myTag.SetData(getModbusUshortValues2());
+            myTag.SetData(GetModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues2());
             Assert.AreEqual(1, values.Count);
             Assert.AreEqual(160, values[0]);
         }
@@ -371,8 +375,8 @@ namespace SmartModbusMasterTests.TagManagement.Types
             };
             myTag.AddAddress(10);
             myTag.Range = 30;
-            myTag.SetData(getModbusUshortValues());
-            myTag.SetData(getModbusUshortValues2());
+            myTag.SetData(GetModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues2());
             Assert.AreEqual(2, values.Count);
             Assert.AreEqual(160, values[0]);
             Assert.AreEqual(200, values[1]);
@@ -388,8 +392,8 @@ namespace SmartModbusMasterTests.TagManagement.Types
                 values.Add(myTag.Value);
             };
             myTag.AddAddress(10);
-            myTag.SetData(getModbusUshortValues2());
-            myTag.SetData(getModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues2());
+            myTag.SetData(GetModbusUshortValues());
             Assert.AreEqual(2, values.Count);
             Assert.AreEqual(200, values[0]);
             Assert.AreEqual(160, values[1]);
@@ -406,8 +410,8 @@ namespace SmartModbusMasterTests.TagManagement.Types
             };
             myTag.AddAddress(10);
             myTag.Range = 50;
-            myTag.SetData(getModbusUshortValues2());
-            myTag.SetData(getModbusUshortValues());
+            myTag.SetData(GetModbusUshortValues2());
+            myTag.SetData(GetModbusUshortValues());
             Assert.AreEqual(1, values.Count);
             Assert.AreEqual(200, values[0]);
         }
