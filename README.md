@@ -35,14 +35,14 @@ The CSV file consists of two parts. The first section contains device informatio
 
 **Device section:**
 
-| Type    | Device  | Ip         | Port | Device ID | Refresh Rate | IsActive |
-| ------- | ------- | ---------- | ---- | --------- | ------------ | -------- |
+| Row Type | Device  | Ip         | Port | Device ID | Refresh Rate | IsActive |
+| -------- | ------- | ---------- | ---- | --------- | ------------ | -------- |
 | device  | Device1 | 10.3.4.247 | 502  | 1         | 1000         | 1        |
 | device  | Device2 | 10.3.4.248 | 502  | 2         | 2000         | 1        |
 
 | Column Name | Description |
 | --- | --- |
-| Type | Must be 'device' for device section |
+| Row Type | Must be 'device' for device section |
 | Device | Device name |
 | Ip | IP address to connect  |
 | Port | Port to connect |
@@ -52,15 +52,16 @@ The CSV file consists of two parts. The first section contains device informatio
 
 **Tag section:**
 
-| Type | Tag      | Device  | Address | Modbus Type | Direction | Type | MaskType | Mask | Merge Type | Range |
-| ---- | -------- | ------- | ------- | ----------- | --------- | ---- | -------- | ---- | ---------- | ----- |
+| Row Type | Tag      | Device  | Address | Modbus Type | Direction | Type | MaskType | Mask | Merge Type | Range |
+| -------- | -------- | ------- | ------- | ----------- | --------- | ---- | -------- | ---- | ---------- | ----- |
 | tag  | TagName1 | Device1 | 1       | cs          | read      | bool | none     | 0    | ormerge    | 0     |
 | tag  | TagName2 | Device1 | 2       | cs          | read      | bool | none     | 0    | ormerge    | 0     |
 | tag  | TagName3 | Device2 | 2       | cs          | read      | bool | none     | 0    | ormerge    | 0     |
 
 | Column Name | Description |
 | --- | --- |
-| Tag | Must be 'tag' for tag section |
+| Row Type | Must be 'tag' for tag section |
+| Tag | A tag for address |
 | Device | Device name written in the device section |
 | Address | read address x: only reads x, x y: reads x and y, x-y: reads x to y|
 | Modbus Type | cs: Coil Status, is: Input status, hr: holding register, ir: input register |
