@@ -4,7 +4,7 @@
 
     public class FloatTag : TagTypeController<float, ushort>
     {
-        private float oldValue = float.MinValue;
+        private float? oldValue;
 
         public FloatTag(Modbus.RegisterFunction function)
         {
@@ -53,7 +53,7 @@
         internal override void TagValueChanged()
         {
             float newValue = Value;
-            if (Math.Abs(newValue - oldValue) > Range)
+            if (!oldValue.HasValue || Math.Abs(newValue - oldValue.Value) > Range)
             {
                 oldValue = newValue;
                 RaiseEvent();

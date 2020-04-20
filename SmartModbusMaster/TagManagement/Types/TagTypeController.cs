@@ -109,19 +109,20 @@
 
         public void SetData(Dictionary<ushort, TModbusType> values)
         {
-            bool isChanged = false;
+            //bool isChanged = false;
             foreach (var item in modbusValueData.Keys.ToArray())
             {
                 if (values.ContainsKey(item) && !EqualityComparer<TModbusType>.Default.Equals(values[item], modbusValueData[item]))
                 {
-                    isChanged = true;
+                    //isChanged = true;
                     modbusValueData[item] = values[item];
                 }
             }
-            if (isChanged)
-            {
-                TagValueChanged();
-            }
+            TagValueChanged();
+            //if (isChanged)
+            //{
+            //    TagValueChanged();
+            //}
         }
 
         internal abstract void CalculateReturnValue();

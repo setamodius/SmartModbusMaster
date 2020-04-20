@@ -2,7 +2,7 @@
 {
     public class BoolTag : TagTypeController<bool, bool>
     {
-        private bool oldvalue = false;
+        private bool? oldvalue;
 
         public BoolTag(Modbus.StatusFunction function)
         {
@@ -45,7 +45,7 @@
 
         internal override void TagValueChanged()
         {
-            if (oldvalue != Value)
+            if (!oldvalue.HasValue || oldvalue != Value)
             {
                 oldvalue = Value;
                 RaiseEvent();

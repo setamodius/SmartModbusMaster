@@ -4,7 +4,7 @@
 
     public class UshortTag : TagTypeController<ushort, ushort>
     {
-        internal ushort oldValue;
+        internal ushort? oldValue;
 
         public UshortTag(Modbus.RegisterFunction function)
         {
@@ -52,7 +52,7 @@
         internal override void TagValueChanged()
         {
             ushort newValue = Value;
-            if (Math.Abs(newValue - oldValue) > Range)
+            if (!oldValue.HasValue || Math.Abs(newValue - oldValue.Value) > Range)
             {
                 oldValue = newValue;
                 RaiseEvent();
