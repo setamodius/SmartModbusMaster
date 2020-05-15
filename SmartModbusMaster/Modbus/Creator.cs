@@ -14,9 +14,10 @@
         public static readonly char _Seperator_ = ',';
         public static int _DefaultPort_ = 502;
         public static int _RefreshRate_ = 2000;
-        //private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         private static readonly LSRFFloatConverter LSRF = new LSRFFloatConverter();
         private static readonly MSRFFloatConverter MSRF = new MSRFFloatConverter();
+        private static readonly LFUintConverter LF = new LFUintConverter();
+        private static readonly RFUintConverter RF = new RFUintConverter();
         private static ModbusDevices myDevices;
         private static ICoreLogger logger;
 
@@ -234,6 +235,24 @@
                         aTag.DefineFloatTag(
                             RegisterFunction.HoldingRegister,
                             MSRF,
+                            ushortrange);
+                    }
+                    else if(valuetype == "lf")
+                    {
+                        ushort ushortrange = ushort.MinValue;
+                        ushort.TryParse(range, out ushortrange);
+                        aTag.DefineUintTag(
+                            RegisterFunction.HoldingRegister,
+                            LF,
+                            ushortrange);
+                    }
+                    else if (valuetype == "rf")
+                    {
+                        ushort ushortrange = ushort.MinValue;
+                        ushort.TryParse(range, out ushortrange);
+                        aTag.DefineUintTag(
+                            RegisterFunction.HoldingRegister,
+                            RF,
                             ushortrange);
                     }
                 }

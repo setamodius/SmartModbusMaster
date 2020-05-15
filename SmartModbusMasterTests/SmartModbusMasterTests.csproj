@@ -53,6 +53,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Converters\RFUintConverterTests.cs" />
+    <Compile Include="Converters\LFUintConverterTests.cs" />
     <Compile Include="Converters\LSRFFloatConverterTests.cs" />
     <Compile Include="Converters\MSRFConverterTests.cs" />
     <Compile Include="Modbus\CreatorTests.cs" />

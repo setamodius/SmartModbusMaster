@@ -1,9 +1,9 @@
 ﻿//device,Device,Ip,Port,DeviceId,RefreshRate,IsActive
 device,Device1,localhost,502,1,1000,1
-//tag,Tag,Device,Address,ModbusType(cs/is/hr/ir),Direction(read/write),Type(bool/ushort/lsrf/msrf),MaskType(none/andmask/ormask),Mask,MergeType(andmerge/ormerge),Range
-tag,tag1,Device1,1,hr,read,ushort,none,0,ormerge,0
-tag,tag2,Device1,2,hr,read,ushort,none,0,ormerge,0
-tag,tag3,Device1,3,hr,read,ushort,none,0,ormerge,0
-tag,tag4,Device1,1,cs,read,bool	,none,0,ormerge,0
-tag,tag5,Device1,2,cs,read,bool,none,0,ormerge,0
-tag,tag6,Device1,3,cs,read,bool,none,0,ormerge,0
+//tag,Tag,Device,Address,ModbusType(cs/is/hr/ir),Direction(read/write),Type(bool/ushort/lsrf/msrf/lf/rf),MaskType(none/andmask/ormask),Mask,MergeType(andmerge/ormerge),Range
+//tag,tag1,Device1,1,hr,read,ushort,none,0,ormerge,0
+//tag,tag2,Device1,2,hr,read,ushort,none,0,ormerge,0
+tag,tag3,Device1,3 4,hr,read,rf,none,0,ormerge,0
+//tag,tag4,Device1,1,cs,read,bool,none,0,ormerge,0
+//tag,tag5,Device1,2,cs,read,bool,none,0,ormerge,0
+//tag,tag6,Device1,3,cs,read,bool,none,0,ormerge,0

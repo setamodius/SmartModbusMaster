@@ -52,7 +52,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\IIntConverter.cs" />
+    <Compile Include="Converters\RFUintConverter.cs" />
     <Compile Include="Converters\LSRFFloatConverter.cs" />
+    <Compile Include="Converters\LFUintConverter.cs" />
     <Compile Include="Converters\MSRFFloatConverter.cs" />
     <Compile Include="Converters\IFloatConverter.cs" />
     <Compile Include="Diagnostic\CoreLogger.cs" />
@@ -82,6 +85,7 @@
     <Compile Include="TagManagement\Types\FloatTag.cs" />
     <Compile Include="TagManagement\Types\ITagType.cs" />
     <Compile Include="TagManagement\Types\TagTypeController.cs" />
+    <Compile Include="TagManagement\Types\UintTag.cs" />
     <Compile Include="TagManagement\Types\UshortTag.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -39,6 +39,10 @@
                 {
                     (item as FloatTag).SetData(HoldingValues);
                 }
+                if (item is UintTag)
+                {
+                    (item as UintTag).SetData(HoldingValues);
+                }
             }
         }
     }

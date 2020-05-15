@@ -29,7 +29,8 @@
     {
         BoolTag,
         UshortTag,
-        FloatTag
+        FloatTag,
+        UintTag
     }
 
     public abstract class TagTypeController<TType, TModbusType> : ITagType
@@ -52,6 +53,10 @@
             {
                 InnerTagType = TagType.BoolTag;
             }
+            else if (typeof(TType) == typeof(uint) && typeof(TModbusType) == typeof(ushort))
+            {
+                InnerTagType = TagType.UintTag;
+            }
             else
             {
                 throw new ArgumentException();
@@ -65,6 +70,8 @@
         public event TagValueChangedEventHandler TagValueChangedEvent;
 
         public IFloatConverter FloatConverter { get; set; }
+
+        public IIntConverter IntConverter { get; set; }
 
         public ModbusFunction Function { get; set; }
 

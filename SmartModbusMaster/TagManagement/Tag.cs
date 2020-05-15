@@ -47,6 +47,10 @@
                 {
                     return ((FloatTag)InnerTag).Value;
                 }
+                if (InnerTag is UintTag)
+                {
+                    return ((UintTag)InnerTag).Value;
+                }
                 if (InnerTag is UshortTag)
                 {
                     return ((UshortTag)InnerTag).Value;
@@ -95,6 +99,27 @@
             InnerTag.TagValueChangedEvent += delegate (ITagType tag)
             {
                 TagStatusChanged?.Invoke(this, EventArgs.Empty);                
+            };
+        }
+
+        public void DefineUintTag(
+            RegisterFunction function,
+            IIntConverter converter,
+            uint range = 0)
+        {
+            if (InnerTag != null)
+            {
+                return;
+            }
+            UintTag innertag = new UintTag(function)
+            {
+                Range = range,
+                IntConverter = converter
+            };
+            InnerTag = innertag;
+            InnerTag.TagValueChangedEvent += delegate (ITagType tag)
+            {
+                TagStatusChanged?.Invoke(this, EventArgs.Empty);
             };
         }
 

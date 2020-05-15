@@ -9,6 +9,7 @@
     {
         private readonly Dictionary<string, BoolTag> allBoolTags = new Dictionary<string, BoolTag>();
         private readonly Dictionary<string, FloatTag> allFloatTags = new Dictionary<string, FloatTag>();
+        private readonly Dictionary<string, UintTag> allUintTags = new Dictionary<string, UintTag>();
         private readonly Dictionary<string, Tag> allTags = new Dictionary<string, Tag>();
         private readonly Dictionary<string, UshortTag> allUshortTags = new Dictionary<string, UshortTag>();
         private readonly Dictionary<string, Tag> allWriteTags = new Dictionary<string, Tag>();
@@ -73,6 +74,15 @@
             return null;
         }
 
+        public UintTag GetUintTagWithName(string name)
+        {
+            if (allUintTags.ContainsKey(name))
+            {
+                return allUintTags[name];
+            }
+            return null;
+        }
+
         public Tag GetReadTagWithName(string name)
         {
             if (allWriteTags.ContainsKey(name))
@@ -124,6 +134,10 @@
             else if (addingTag.InnerTag is FloatTag)
             {
                 allFloatTags.Add(addingTag.Name, (addingTag.InnerTag as FloatTag));
+            }
+            else if (addingTag.InnerTag is UintTag)
+            {
+                allUintTags.Add(addingTag.Name, (addingTag.InnerTag as UintTag));
             }
 
             if (addingTag.InnerTag.Function == StatusFunction.CoilStatus)
