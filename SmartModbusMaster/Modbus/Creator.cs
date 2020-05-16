@@ -151,8 +151,7 @@
                     string ip = splittedLine[2];
                     int.TryParse(splittedLine[3], out int port);
                     byte.TryParse(splittedLine[4], out byte deviceid);
-                    int refreshrate = _RefreshRate_;
-                    int.TryParse(splittedLine[5], out refreshrate);
+                    int.TryParse(splittedLine[5], out int refreshrate);
                     bool isactive = splittedLine[6] == "1" ? true : false;
                     Device aDevice = new Device(
                         devicename,
@@ -209,10 +208,8 @@
                 {
                     if (valuetype == "ushort")
                     {
-                        ushort ushortmask = ushort.MaxValue;
-                        ushort.TryParse(mask, out ushortmask);
-                        ushort ushortrange = ushort.MinValue;
-                        ushort.TryParse(range, out ushortrange);
+                        ushort.TryParse(mask, out ushort ushortmask);
+                        ushort.TryParse(range, out ushort ushortrange);
                         aTag.DefineUshortTag(
                             RegisterFunction.HoldingRegister,
                             ConvertStringToMaskType(masktype), ushortmask,
@@ -221,8 +218,7 @@
                     }
                     else if (valuetype == "lsrf")
                     {
-                        ushort ushortrange = ushort.MinValue;
-                        ushort.TryParse(range, out ushortrange);
+                        ushort.TryParse(range, out ushort ushortrange);
                         aTag.DefineFloatTag(
                             RegisterFunction.HoldingRegister,
                             LSRF,
@@ -230,8 +226,7 @@
                     }
                     else if (valuetype == "msrf")
                     {
-                        ushort ushortrange = ushort.MinValue;
-                        ushort.TryParse(range, out ushortrange);
+                        ushort.TryParse(range, out ushort ushortrange);
                         aTag.DefineFloatTag(
                             RegisterFunction.HoldingRegister,
                             MSRF,
@@ -239,8 +234,7 @@
                     }
                     else if(valuetype == "lf")
                     {
-                        ushort ushortrange = ushort.MinValue;
-                        ushort.TryParse(range, out ushortrange);
+                        ushort.TryParse(range, out ushort ushortrange);
                         aTag.DefineUintTag(
                             RegisterFunction.HoldingRegister,
                             LF,
@@ -248,8 +242,7 @@
                     }
                     else if (valuetype == "rf")
                     {
-                        ushort ushortrange = ushort.MinValue;
-                        ushort.TryParse(range, out ushortrange);
+                        ushort.TryParse(range, out ushort ushortrange);
                         aTag.DefineUintTag(
                             RegisterFunction.HoldingRegister,
                             RF,
@@ -260,32 +253,44 @@
                 {
                     if (valuetype == "ushort")
                     {
-                        ushort ushortmask = ushort.MaxValue;
-                        ushort.TryParse(mask, out ushortmask);
-                        ushort ushortrange = ushort.MinValue;
-                        ushort.TryParse(range, out ushortrange);
+                        ushort.TryParse(mask, out ushort ushortmask);
+                        ushort.TryParse(range, out ushort ushortrange);
                         aTag.DefineUshortTag(
-                            RegisterFunction.HoldingRegister,
+                            RegisterFunction.InputRegister,
                             ConvertStringToMaskType(masktype), ushortmask,
                             ConvertStringToMergeType(mergetype),
                             ushortrange);
                     }
                     else if (valuetype == "lsrf")
                     {
-                        ushort ushortrange = ushort.MinValue;
-                        ushort.TryParse(range, out ushortrange);
+                        ushort.TryParse(range, out ushort ushortrange);
                         aTag.DefineFloatTag(
-                            RegisterFunction.HoldingRegister,
+                            RegisterFunction.InputRegister,
                             LSRF,
                             ushortrange);
                     }
                     else if (valuetype == "msrf")
                     {
-                        ushort ushortrange = ushort.MinValue;
-                        ushort.TryParse(range, out ushortrange);
+                        ushort.TryParse(range, out ushort ushortrange);
                         aTag.DefineFloatTag(
-                            RegisterFunction.HoldingRegister,
+                            RegisterFunction.InputRegister,
                             MSRF,
+                            ushortrange);
+                    }
+                    else if (valuetype == "lf")
+                    {
+                        ushort.TryParse(range, out ushort ushortrange);
+                        aTag.DefineUintTag(
+                            RegisterFunction.InputRegister,
+                            LF,
+                            ushortrange);
+                    }
+                    else if (valuetype == "rf")
+                    {
+                        ushort.TryParse(range, out ushort ushortrange);
+                        aTag.DefineUintTag(
+                            RegisterFunction.InputRegister,
+                            RF,
                             ushortrange);
                     }
                 }

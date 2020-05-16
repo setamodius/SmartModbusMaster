@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kr.Communication.SmartModbusMaster.Diagnostic;
 using Kr.Communication.SmartModbusMaster.Modbus;
 
 namespace ConsoleTestApp
@@ -11,6 +12,7 @@ namespace ConsoleTestApp
     {
         static void Main()
         {
+            GlobalLogger.LogMessageReceived += GlobalLogger_LogMessageReceived;
             Console.WriteLine("Savronik.Tools.Modbus.Reader started");
             var myDevices = Creator.FromFile("address.csv");
 
@@ -25,6 +27,11 @@ namespace ConsoleTestApp
             }
             myDevices.StartDevices();
             Console.ReadLine();
+        }
+
+        private static void GlobalLogger_LogMessageReceived(object sender, LogReceivedEventArgs e)
+        {
+            Console.WriteLine(e.Message);
         }
 
         private static void MyDevices_TagStatusChanged(object sender, TagChangedEventArgs e)

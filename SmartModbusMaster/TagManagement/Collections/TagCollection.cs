@@ -49,6 +49,7 @@
             CoilStatuses.CalculteParseAddresses();
             InputStatuses.CalculteParseAddresses();
             HoldingRegisters.CalculteParseAddresses();
+            InputRegisters.CalculteParseAddresses();
         }
 
         public IEnumerable<Tag> GetAllTags()
@@ -156,14 +157,14 @@
             }
             else if (addingTag.InnerTag.Function == RegisterFunction.HoldingRegister)
             {
-                if (!InputStatuses.ContainsKey(addingTag.Name))
+                if (!HoldingRegisters.ContainsKey(addingTag.Name))
                 {
                     HoldingRegisters.Add(addingTag.Name, (addingTag.InnerTag));
                 }
             }
             else if (addingTag.InnerTag.Function == RegisterFunction.InputRegister)
             {
-                if (!InputStatuses.ContainsKey(addingTag.Name))
+                if (!InputRegisters.ContainsKey(addingTag.Name))
                 {
                     InputRegisters.Add(addingTag.Name, (addingTag.InnerTag));
                 }
