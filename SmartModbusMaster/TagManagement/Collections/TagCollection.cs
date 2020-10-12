@@ -9,8 +9,8 @@
     {
         private readonly Dictionary<string, BoolTag> allBoolTags = new Dictionary<string, BoolTag>();
         private readonly Dictionary<string, FloatTag> allFloatTags = new Dictionary<string, FloatTag>();
-        private readonly Dictionary<string, UintTag> allUintTags = new Dictionary<string, UintTag>();
         private readonly Dictionary<string, Tag> allTags = new Dictionary<string, Tag>();
+        private readonly Dictionary<string, UintTag> allUintTags = new Dictionary<string, UintTag>();
         private readonly Dictionary<string, UshortTag> allUshortTags = new Dictionary<string, UshortTag>();
         private readonly Dictionary<string, Tag> allWriteTags = new Dictionary<string, Tag>();
 
@@ -57,6 +57,11 @@
             return allTags.Values;
         }
 
+        public IEnumerable<string> GetAllWriteTags()
+        {
+            return allWriteTags.Keys;
+        }
+
         public BoolTag GetBoolTagWithName(string name)
         {
             if (allBoolTags.ContainsKey(name))
@@ -75,29 +80,20 @@
             return null;
         }
 
-        public UintTag GetUintTagWithName(string name)
-        {
-            if (allUintTags.ContainsKey(name))
-            {
-                return allUintTags[name];
-            }
-            return null;
-        }
-
-        public Tag GetReadTagWithName(string name)
-        {
-            if (allWriteTags.ContainsKey(name))
-            {
-                return allWriteTags[name];
-            }
-            return null;
-        }
-
         public Tag GetTagWithName(string name)
         {
             if (allTags.ContainsKey(name))
             {
                 return allTags[name];
+            }
+            return null;
+        }
+
+        public UintTag GetUintTagWithName(string name)
+        {
+            if (allUintTags.ContainsKey(name))
+            {
+                return allUintTags[name];
             }
             return null;
         }
@@ -111,6 +107,14 @@
             return null;
         }
 
+        public Tag GetWriteTagWithName(string name)
+        {
+            if (allWriteTags.ContainsKey(name))
+            {
+                return allWriteTags[name];
+            }
+            return null;
+        }
         private void Classificator(Tag addingTag)
         {
             if (addingTag.TagDirection == Direction.Write)

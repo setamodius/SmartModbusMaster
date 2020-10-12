@@ -48,9 +48,9 @@
         {
             foreach (var item in Values)
             {
-                item.WriteValueToTag(tagname, value);
+                item.WriteValueToTag(tagname, value);                
             }
-        }
+        }      
 
         new internal void Add(string devicename, Device device)
         {

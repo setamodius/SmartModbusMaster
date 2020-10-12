@@ -67,7 +67,7 @@
 
         public void WriteValueToTag(string tagname, object value)
         {
-            var currentTag = Collection.GetReadTagWithName(tagname);
+            var currentTag = Collection.GetWriteTagWithName(tagname);
 
             if (currentTag == null)
             {
@@ -83,6 +83,11 @@
             {
                 logger.Warning(null, $"{Name}({Ip}) device not connected. Tag not written : {tagname} ");
             }
+        }
+
+        public IEnumerable<string> GetAllWriteTags()
+        {
+            return Collection.GetAllWriteTags();
         }
 
         private void MyModbusMaster_ConnectionStateChanged(ModbusMaster sender, bool status)
@@ -110,25 +115,25 @@
                 return;
             }
 
-            logger.Trace($"{Name}({Ip}) device - InnerTag={tag.InnerTag.GetType().ToString()}, value={value.GetType().ToString()}");
-            if (tag.InnerTag is BoolTag && value is bool)
+            logger.Trace($"{Name}({Ip}) device - InnerTag={tag.InnerTag.GetType()}, value={value.GetType()}");
+            if (tag.InnerTag is BoolTag booltag && value is bool booleanvalue)
             {
-                var currentBoolTag = (BoolTag)tag.InnerTag;
-                currentBoolTag.Value = (bool)value;
+                var currentBoolTag = booltag;
+                currentBoolTag.Value = booleanvalue;
                 myModbusMaster?.WriteBoolTagValue(currentBoolTag);
             }
 
-            if (tag.InnerTag is UshortTag && value is ushort)
+            if (tag.InnerTag is UshortTag ushorttag && value is ushort ushortvalue)
             {
-                var currentUshortTag = (UshortTag)tag.InnerTag;
-                currentUshortTag.Value = (ushort)value;
+                var currentUshortTag = ushorttag;
+                currentUshortTag.Value = ushortvalue;
                 myModbusMaster?.WriteUshortTagValue(currentUshortTag);
             }
 
-            if (tag.InnerTag is FloatTag && value is float)
+            if (tag.InnerTag is FloatTag floattag && value is float floatvalue)
             {
-                var currentFloatTag = (FloatTag)tag.InnerTag;
-                currentFloatTag.Value = (ushort)value;
+                var currentFloatTag = floattag;
+                currentFloatTag.Value = floatvalue;
                 myModbusMaster?.WriteFloatTagValue(currentFloatTag);
             }
         }
