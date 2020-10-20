@@ -65,23 +65,25 @@
             myModbusMaster.Start();
         }
 
-        public void WriteValueToTag(string tagname, object value)
+        public bool WriteValueToTag(string tagname, object value)
         {
             var currentTag = Collection.GetWriteTagWithName(tagname);
 
             if (currentTag == null)
             {
                 logger.Warning(null, $"{Name}({Ip}) device write error. Tag not found : {tagname}");
-                return;
+                return false;
             }
             logger.Trace($"{Name}({Ip}) device write.  Tag name : {currentTag?.Name} Tag Value : {value}");
             if (isdeviceConnected)
             {
                 WriteTagHelper(currentTag, value);
+                return true;
             }
             else
             {
                 logger.Warning(null, $"{Name}({Ip}) device not connected. Tag not written : {tagname} ");
+                return false;
             }
         }
 

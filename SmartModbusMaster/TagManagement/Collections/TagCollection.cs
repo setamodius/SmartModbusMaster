@@ -58,7 +58,7 @@
         }
 
         public IEnumerable<string> GetAllWriteTags()
-        {
+        {            
             return allWriteTags.Keys;
         }
 

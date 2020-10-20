@@ -44,12 +44,17 @@
             }
         }
 
-        public void WriteTag(string tagname, object value)
+        public IEnumerable<Device> WriteTag(string tagname, object value)
         {
+            List<Device> writeSuccessDevices = new List<Device>();
             foreach (var item in Values)
             {
-                item.WriteValueToTag(tagname, value);                
+                if (item.WriteValueToTag(tagname, value))
+                {
+                    writeSuccessDevices.Add(item);
+                }                
             }
+            return writeSuccessDevices;
         }      
 
         new internal void Add(string devicename, Device device)
