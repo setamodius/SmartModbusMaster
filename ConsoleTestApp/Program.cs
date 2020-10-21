@@ -44,6 +44,7 @@ namespace ConsoleTestApp
         {
             count++;
             myDevices.WriteTag("ETP/TrafficControlOutside/VtsController/Vts1/Vts1Command/Command", count);
+            myTimer.Stop();
         }
 
         private static void GlobalLogger_LogMessageReceived(object sender, LogReceivedEventArgs e)

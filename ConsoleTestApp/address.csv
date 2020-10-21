@@ -1,5 +1,5 @@
 ﻿//device,Device,Ip,Port,DeviceId,RefreshRate,IsActive,,,,
-device,EA1,10.3.4.246,502,11,1000,1,,,,
+device,EA1,10.3.6.161,5502,11,1000,1,,,,
 //tag,//Tag,Device,Address,ModbusType(cs/is/hr/ir),Direction(read/write),Type(bool/ushort/lsfr/msrf),MaskType(none/andmask/1/ormask/2),Mask,MergeType(andmerge/ormerge),Range
 tag,ETP/TrafficControlOutside/VtsController/Vts1/Vts1Message/Original,EA1,101,hr,read,ushort,none,1,ormerge,0
 tag,ETP/TrafficControlOutside/VtsController/Vts1/Vts2Message/Original,EA1,201,hr,read,ushort,none,1,ormerge,0

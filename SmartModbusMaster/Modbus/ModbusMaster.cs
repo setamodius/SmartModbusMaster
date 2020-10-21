@@ -5,8 +5,9 @@
     using System.Net.Sockets;
     using System.Runtime.InteropServices;
     using System.Timers;
-    using global::Modbus.Device;
+ 
     using Kr.Communication.SmartModbusMaster.Diagnostic;
+    using NModbus;
     using TagManagement.Types;
 
     internal class ModbusMaster : IDisposable
@@ -20,10 +21,11 @@
         private readonly Queue<FloatTag> floatWriteList = new Queue<FloatTag>();
         private bool isreading = false;
         private bool iswriting = false;
-        private ModbusIpMaster master;
+        private IModbusMaster master;
         private bool networkIsOk = false;
         private bool? oldNetworkIsOk;
         private TcpClient tcpClient;
+        
         private readonly Queue<UshortTag> ushortWriteList = new Queue<UshortTag>();
 
         public ModbusMaster(Device device, ICoreLogger coreLogger)
@@ -134,7 +136,8 @@
                         return false;
                     }
                     // create Modbus TCP Master by the tcpclient
-                    master = ModbusIpMaster.CreateIp(tcpClient);
+                    var factory = new ModbusFactory();
+                    master = factory.CreateMaster(tcpClient);
                     master.Transport.Retries = 0; //don't have to do retries
                     //master.Transport.ReadTimeout = 1500;
                     logger.Info($"Connected to server - {IpAddress}");
@@ -154,27 +157,21 @@
         {
             foreach (var item in tag.GetAddresses())
             {
-                master.WriteSingleCoil(myDevice.Id, (ushort)(item - 1), tag.GetWriteValue());
+                master.WriteMultipleCoils(myDevice.Id, (ushort)(item - 1), new bool[] { tag.GetWriteValue() });
             }
         }
 
         private void InnerWriteFloatTagValue(FloatTag tag)
         {
-            int addressindex = 0;
-            foreach (var item in tag.GetAddresses())
-            {
-                master.WriteSingleRegister(myDevice.Id, (ushort)(item - 1), tag.GetWriteValue()[addressindex]);
-                addressindex++;
-                if (addressindex == 2)
-                {
-                    break;
-                }
-            }
+            var addresses = tag.GetAddresses();
+            var values = tag.GetWriteValue();
+            master.WriteMultipleRegisters(myDevice.Id, (ushort)(addresses[0] - 1), values);
+            
         }
 
         private void InnerWriteUshortTagValue(UshortTag tag)
         {
-            master.WriteSingleRegister(myDevice.Id, (ushort)(tag.GetAddresses()[0] - 1), tag.GetWriteValue());
+            master.WriteMultipleRegisters(myDevice.Id, (ushort)(tag.GetAddresses()[0] - 1), new ushort[] { tag.GetWriteValue() });
         }
 
         private void MyTimer_Tick(object sender, EventArgs e)
